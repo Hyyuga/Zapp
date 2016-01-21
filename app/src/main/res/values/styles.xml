@@ -1,0 +1,49 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="zapp_card_view_style">@style/ZappCardView</item>
+        <!--<item name="android:colorBackground">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
+        <!--<item name="android:textViewStyle">@style/MyTextView</item>-->
+        <!--<item name="android:colorControlNormal">#c5c5c5</item>-->
+        <!--<item name="android:colorControlActivated">@color/colorAccent</item>-->
+        <!--<item name="android:colorControlHighlight">@color/colorAccent</item>-->
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyTextView" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="ZappCardView" parent="CardView">
+        <item name="cardBackgroundColor">@color/colorLightGrey</item>
+        <!--<item name="cardCornerRadius">4dp</item>-->
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+
+</resources>

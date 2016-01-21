@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_white_48dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_members"
+            android:icon="@drawable/ic_account_box_white_48dp"
+            android:title="Mitglieder"
+            />
+        <item
+            android:id="@+id/nav_matchday"
+            android:icon="@drawable/ic_near_me_white_48dp"
+            android:title="Ergebnis" />
+        <item
+            android:id="@+id/nav_penalties"
+            android:icon="@drawable/ic_grade_white_48dp"
+            android:title="Strafen" />
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/ic_near_me_white_48dp"
+            android:title="Location" />
+        <item
+            android:id="@+id/nav_score"
+            android:icon="@drawable/ic_near_me_white_48dp"
+            android:title="Erfolge" />
+    </group>
+
+    <item android:title="Admin Bereich">
+        <!--Mitglieder anlegen, starfen anlegen, meisterschaftsspiele anlegen-->
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_white_48dp"
+                android:title="Facebook" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_send_white_48dp"
+                android:title="Send" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_build_white_48dp"
+                android:title="Settings" />
+        </menu>
+    </item>
+
+</menu>
