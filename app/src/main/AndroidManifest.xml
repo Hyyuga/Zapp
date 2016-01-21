@@ -37,34 +37,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name=".member.MemberlActivity"
-            android:label="@string/title_activity_member"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="sn.zapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".penalty.PenaltyActivity"
-            android:label="@string/title_activity_penalty"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="sn.zapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".score.ScoreActivity"
-            android:label="@string/title_activity_score"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="sn.zapp.MainActivity" />
-        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -93,8 +65,8 @@
                 android:value="sn.zapp.MainActivity" />
         </activity>
         <activity
-            android:name=".matchday.MatchdayActivity"
-            android:label="@string/title_activity_matchday"
+            android:name=".matchday.Matchday1Activity"
+            android:label="@string/title_activity_matchday1"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">
             <meta-data
@@ -102,8 +74,23 @@
                 android:value="sn.zapp.MainActivity" />
         </activity>
         <activity
-            android:name=".util.ListActivity"
-            android:label="@string/title_activity_list"
+            android:name=".member.MemberBaseListActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sn.zapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".penalty.PenaltyBaseListActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sn.zapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".score.ScoreBaseListActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">
             <meta-data

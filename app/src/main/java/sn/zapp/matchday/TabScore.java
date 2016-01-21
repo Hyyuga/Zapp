@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.realm.RealmList;
 import sn.zapp.R;
-import sn.zapp.matchday.adapter.HeaderAdapterScore;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberScoreValue;
 import sn.zapp.realm.ZappRealmDBManager;
 
 /**
@@ -25,6 +26,7 @@ public class TabScore extends Fragment {
     private ZappRealmDBManager realmDBManager = null;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mUiRecyclerView;
+    private RealmList<MemberScoreValue> resultScore = null;
 
     public TabScore() {
     }
@@ -33,9 +35,10 @@ public class TabScore extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabScore newInstance(Member member) {
+    public static TabScore newInstance(Member member, RealmList<MemberScoreValue> resultScore) {
         TabScore fragment = new TabScore();
         fragment.setMember(member);
+        fragment.setResultScore(resultScore);
         return fragment;
     }
 
@@ -45,14 +48,12 @@ public class TabScore extends Fragment {
         View view = inflater.inflate(R.layout.tab_score, container, false);
         realmDBManager = new ZappRealmDBManager();
         mUiRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_score);
-//        mUiRecyclerView.addItemDecoration(
-//                new SpaceItemDecoration(30, true, true));
 
         mUiRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mUiRecyclerView.setLayoutManager(mLinearLayoutManager);
         mUiRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mUiRecyclerView.setAdapter(new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember()));
+        mUiRecyclerView.setAdapter(new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember(), getResultScore()));
         return view;
     }
 
@@ -63,7 +64,7 @@ public class TabScore extends Fragment {
 
     @Override
     public void onDestroy() {
-        realmDBManager.close();
+        if(realmDBManager != null) realmDBManager.close();
         super.onDestroy();
     }
 
@@ -82,5 +83,13 @@ public class TabScore extends Fragment {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public RealmList<MemberScoreValue> getResultScore() {
+        return resultScore;
+    }
+
+    public void setResultScore(RealmList<MemberScoreValue> resultScore) {
+        this.resultScore = resultScore;
     }
 }

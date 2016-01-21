@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.realm.RealmList;
 import sn.zapp.R;
-import sn.zapp.matchday.adapter.HeaderAdapterPenalty;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.realm.ZappRealmDBManager;
 
 /**
@@ -25,7 +26,7 @@ public class TabPenalty extends Fragment {
     private ZappRealmDBManager realmDBManager = null;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mUiRecyclerView;
-
+    private RealmList<MemberPenalyValue> penaltyResult = null;
     public TabPenalty() {
     }
 
@@ -33,9 +34,10 @@ public class TabPenalty extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabPenalty newInstance( Member member) {
+    public static TabPenalty newInstance( Member member, RealmList<MemberPenalyValue> penaltyResult) {
         TabPenalty fragment = new TabPenalty();
         fragment.setMember(member);
+        fragment.setPenaltyResult(penaltyResult);
         return fragment;
     }
 
@@ -45,14 +47,12 @@ public class TabPenalty extends Fragment {
         View view = inflater.inflate(R.layout.tab_penalty, container, false);
         realmDBManager = new ZappRealmDBManager();
         mUiRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_penalty);
-//        mUiRecyclerView.addItemDecoration(
-//                new SpaceItemDecoration(30, true, true));
 
         mUiRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mUiRecyclerView.setLayoutManager(mLinearLayoutManager);
         mUiRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        HeaderAdapterPenalty adapterPenalty = new HeaderAdapterPenalty(realmDBManager.list_all_penalties(), getMember());
+        HeaderAdapterPenalty adapterPenalty = new HeaderAdapterPenalty(realmDBManager.list_all_penalties(), getMember(), getPenaltyResult());
         mUiRecyclerView.setAdapter(adapterPenalty);
         return view;
     }
@@ -64,7 +64,7 @@ public class TabPenalty extends Fragment {
 
     @Override
     public void onDestroy() {
-        realmDBManager.close();
+        if(realmDBManager != null) realmDBManager.close();
         super.onDestroy();
     }
 
@@ -85,4 +85,11 @@ public class TabPenalty extends Fragment {
         this.member = member;
     }
 
+    public RealmList<MemberPenalyValue> getPenaltyResult() {
+        return penaltyResult;
+    }
+
+    public void setPenaltyResult(RealmList<MemberPenalyValue> penaltyResult) {
+        this.penaltyResult = penaltyResult;
+    }
 }

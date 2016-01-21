@@ -11,10 +11,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import io.realm.RealmList;
 import sn.zapp.R;
 import sn.zapp.ZappApplication;
 import sn.zapp.event.PenaltyEvent;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.model.Penalty;
 import sn.zapp.util.Action;
 
@@ -23,11 +25,14 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
     private static final int TYPE_ITEM = 1;
     private final List<Penalty> mValues;
     private Member member = null;
+    private RealmList<MemberPenalyValue> resultPenalty = null;
+//    EventBus bus = EventBus.getDefault();
     private VHHeader header;
 
-    public HeaderAdapterPenalty(List<Penalty> data, Member member) {
+    public HeaderAdapterPenalty(List<Penalty> data, Member member, RealmList<MemberPenalyValue> resultPenalty) {
         this.mValues = data;
         this.setMember(member);
+        this.setResultPenalty(resultPenalty);
     }
 
     @Override
@@ -36,30 +41,32 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
             final View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.tab_penalty_item, parent, false);
             final ViewHolderPenalty viewHolderPenalty = new ViewHolderPenalty(view);
-            viewHolderPenalty.mButtonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addAMount(viewHolderPenalty);
-                    viewHolderPenalty.addValue();
-                    PenaltyEvent event = new PenaltyEvent();
-                    event.setMember(getMember());
-                    event.setPenalty(viewHolderPenalty.mItem);
-                    event.setAction(Action.ADD);
-                    EventBus.getDefault().post(event);
-                }
-            });
-            viewHolderPenalty.mButtonMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   getHeader().removeNumer();
-                    viewHolderPenalty.resetValue();
-                    PenaltyEvent event = new PenaltyEvent();
-                    event.setMember(getMember());
-                    event.setPenalty(viewHolderPenalty.mItem);
-                    event.setAction(Action.MINUS);
-                    EventBus.getDefault().post(event);
-                }
-            });
+            if(getResultPenalty() == null) {
+                viewHolderPenalty.mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addAMount(viewHolderPenalty);
+                        viewHolderPenalty.addValue();
+                        PenaltyEvent event = new PenaltyEvent();
+                        event.setMember(getMember());
+                        event.setPenalty(viewHolderPenalty.mItem);
+                        event.setAction(Action.ADD);
+                        EventBus.getDefault().post(event);
+                    }
+                });
+                viewHolderPenalty.mButtonMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getHeader().removeNumer();
+                        viewHolderPenalty.resetValue();
+                        PenaltyEvent event = new PenaltyEvent();
+                        event.setMember(getMember());
+                        event.setPenalty(viewHolderPenalty.mItem);
+                        event.setAction(Action.MINUS);
+                        EventBus.getDefault().post(event);
+                    }
+                });
+            }
             return viewHolderPenalty;
         } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext())
@@ -77,8 +84,18 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
         if (holder instanceof ViewHolderPenalty) {
             final ViewHolderPenalty viewHolderPenalty = (ViewHolderPenalty) holder;
             viewHolderPenalty.mItem = getItem(position);
+            String penaltyTotal = null;
+            if(getResultPenalty() != null) {
+                for (MemberPenalyValue result : getResultPenalty()) {
+                    if(result.getPenalty().equals(viewHolderPenalty.mItem)){
+                        penaltyTotal = result.getDbValue();
+                    }
+                }
+                if(penaltyTotal == null) penaltyTotal = viewHolderPenalty.mPenaltyValue.toString();
+            }
+            if(penaltyTotal == null)penaltyTotal =  viewHolderPenalty.mPenaltyValue.toString();
             viewHolderPenalty.mContentView.setText(mValues.get(position - 1).getName() + " (" + mValues.get(position - 1).getAmount().toString() + " € )");
-            viewHolderPenalty.mPenaltyTotal.setText(viewHolderPenalty.mPenaltyValue.toString());
+            viewHolderPenalty.mPenaltyTotal.setText(penaltyTotal);
         } else if (holder instanceof VHHeader) {
             VHHeader viewHolderHeader = (VHHeader) holder;
             viewHolderHeader.contentName.setText("Strafen");
@@ -139,6 +156,14 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
         this.member = member;
     }
 
+    public RealmList<MemberPenalyValue> getResultPenalty() {
+        return resultPenalty;
+    }
+
+    public void setResultPenalty(RealmList<MemberPenalyValue> resultPenalty) {
+        this.resultPenalty = resultPenalty;
+    }
+
     public class ViewHolderPenalty extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
@@ -147,6 +172,7 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
         public Penalty mItem;
         public final TextView mPenaltyTotal;
         public BigDecimal mPenaltyValue;
+        EventBus bus = EventBus.getDefault();
 
         public ViewHolderPenalty(View view) {
             super(view);
@@ -158,11 +184,12 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
             mPenaltyValue = new BigDecimal(0);
         }
 
-        public void addValue(){
+        public void addValue() {
             mPenaltyValue = mPenaltyValue.add(new BigDecimal(1));
             notifyDataSetChanged();
         }
-        public void resetValue(){
+
+        public void resetValue() {
             mPenaltyValue = new BigDecimal(0);
             notifyDataSetChanged();
         }
@@ -200,4 +227,10 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
             notifyDataSetChanged();
         }
     }
+
+//    public void onEvent(ScoreResultEvent event) {
+//        System.out.print("");
+//        getHeader().setNumber(new BigDecimal(98));
+//        notifyDataSetChanged();
+//    }
 }

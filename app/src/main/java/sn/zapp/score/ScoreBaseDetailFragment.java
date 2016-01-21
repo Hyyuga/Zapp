@@ -11,14 +11,14 @@ import android.widget.Button;
 import io.realm.RealmObject;
 import sn.zapp.R;
 import sn.zapp.base.BaseDetailFragment;
-import sn.zapp.model.Member;
+import sn.zapp.model.Score;
 
 /**
  * Created by Steppo on 20.01.2016.
  */
 public class ScoreBaseDetailFragment extends BaseDetailFragment{
 
-    private TextInputLayout vorname, nachname, email, address;
+    private TextInputLayout name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class ScoreBaseDetailFragment extends BaseDetailFragment{
             @Override
             public void onClick(View view) {
                 initFields(null);
-                Member newMember = new Member(vorname.getEditText().getText().toString(), nachname.getEditText().getText().toString(), null, email.getEditText().getText().toString(), address.getEditText().getText().toString());
-                realmDBManager.insertRealmObject(newMember);
+                Score newScore = new Score(name.getEditText().getText().toString());
+                realmDBManager.insertRealmObject(newScore);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 boolean pop = manager.popBackStackImmediate();
                 baseListActivity.getFab().show();
@@ -46,7 +46,7 @@ public class ScoreBaseDetailFragment extends BaseDetailFragment{
 
     @Override
     public int getDetailFragmentLayout() {
-        return R.layout.fragment_member_detail;
+        return R.layout.fragment_score_detail;
     }
 
     @Override
@@ -56,33 +56,27 @@ public class ScoreBaseDetailFragment extends BaseDetailFragment{
             aView = view;
         else aView = getView();
 
-        vorname = (TextInputLayout) aView.findViewById(R.id.input_layout_firstname);
-        nachname = (TextInputLayout) aView.findViewById(R.id.input_layout_lastname);
-        email = (TextInputLayout) aView.findViewById(R.id.input_layout_email);
-        address = (TextInputLayout) aView.findViewById(R.id.input_layout_adress);
+        name = (TextInputLayout) aView.findViewById(R.id.input_layout_name);
     }
 
     @Override
     public void setField(RealmObject object) {
-        Member member = (Member) object;
-        vorname.getEditText().setText(member.getVorname());
-        nachname.getEditText().setText(member.getNachname());
-        email.getEditText().setText(member.getEmail());
-        address.getEditText().setText(member.getAdresse());
+        Score score = (Score) object;
+        name.getEditText().setText(score.getName());
     }
 
     @Override
     public String getEditTitle() {
-        return "Mitglied bearbeiten";
+        return "Erfolg bearbeiten";
     }
 
     @Override
     public String getCreateTitle() {
-        return "Mitglieder anlegen";
+        return "Erfolg anlegen";
     }
 
     @Override
     public String getActivityTitle() {
-        return "Mitglieder";
+        return "Erfolge";
     }
 }

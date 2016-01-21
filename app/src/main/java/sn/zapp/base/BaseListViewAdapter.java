@@ -20,13 +20,12 @@ import sn.zapp.util.Action;
 /**
  * Created by Steppo on 20.01.2016.
  */
-public abstract class BaseListViewAdapter extends RealmBasedRecyclerViewAdapter<RealmObject, BaseListViewAdapter.ViewHolder> {
+public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBasedRecyclerViewAdapter<T, BaseListViewAdapter.ViewHolder> {
     private BaseListFragment.OnListFragmentInteractionListener mOnFragmentListener = null;
-
 
     public BaseListViewAdapter(
             Context context,
-            RealmResults<RealmObject> realmResults,
+            RealmResults<T> realmResults,
             boolean automaticUpdate,
             boolean animateIdType) {
         super(context, realmResults, automaticUpdate, animateIdType);
@@ -36,16 +35,14 @@ public abstract class BaseListViewAdapter extends RealmBasedRecyclerViewAdapter<
     @Override
     public BaseListViewAdapter.ViewHolder onCreateRealmViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_member_item, parent, false);
+                .inflate(R.layout.fragment_base_item, parent, false);
 
         return new ViewHolder((LinearLayout) view);
     }
 
+
     @Override
-    public void onBindRealmViewHolder(final ViewHolder holder, final int position) {
-        final RealmObject object = realmResults.get(position);
-        holder.mItem = object;
-        holder.mContentView.setText(getBindHolderContentText());
+    public void onBindRealmViewHolder(final BaseListViewAdapter.ViewHolder holder, final int position) {
         CardView cardView = (CardView) holder.mView.findViewById(R.id.card_view);
         cardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -83,9 +80,9 @@ public abstract class BaseListViewAdapter extends RealmBasedRecyclerViewAdapter<
         this.mOnFragmentListener = mOnFragmentListener;
     }
 
-    abstract protected String getBindHolderContentText();
+    abstract protected void setBindHolderContentText();
 
-    class ViewHolder extends RealmViewHolder {
+    protected class ViewHolder extends RealmViewHolder {
         public final View mView;
         public final TextView mContentView;
         public final ImageView mButtonEdit;

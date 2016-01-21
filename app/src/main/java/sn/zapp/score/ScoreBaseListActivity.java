@@ -7,7 +7,7 @@ import io.realm.RealmObject;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.base.BaseListFragment;
-import sn.zapp.model.Member;
+import sn.zapp.model.Score;
 import sn.zapp.util.Action;
 
 /**
@@ -29,25 +29,25 @@ public class ScoreBaseListActivity extends BaseListActivity implements BaseListF
 
     @Override
     protected void deleteListObject(RealmObject item) {
-        realmDBManager.deleteMember((Member)item);
+        realmDBManager.deleteScore((Score) item);
     }
 
     @Override
     public void onListFragmentInteraction(RealmObject item, Action action) {
-        Member member = (Member) item;
+        Score score = (Score) item;
         if (action.equals(Action.DELETE))
-            deleteListObject(member);
+            deleteListObject(score);
         else openListItemDetailView(item, action);
     }
 
     @Override
     protected String getActivityTitle() {
-        return "Mitglieder";
+        return "Erfolge";
     }
 
     @Override
     protected BaseListFragment getListFragment() {
-        return new MemberBaseListFragment();
+        return new ScoreBaseListFragment();
     }
 
     @Override

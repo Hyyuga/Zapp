@@ -14,18 +14,17 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
-import sn.zapp.member.MemberlistFragment;
-import sn.zapp.model.Member;
+import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 
-public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Member, MatchdaylistViewAdapter.ViewHolder> {
+public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Matchday, MatchdaylistViewAdapter.ViewHolder> {
 
-    private MemberlistFragment.OnListFragmentInteractionListener mOnFragmentListener = null;
+    private MatchdayListFragment.OnListFragmentInteractionListener mOnFragmentListener = null;
 
 
     public MatchdaylistViewAdapter(
             Context context,
-            RealmResults<Member> realmResults,
+            RealmResults<Matchday> realmResults,
             boolean automaticUpdate,
             boolean animateIdType) {
         super(context, realmResults, automaticUpdate, animateIdType);
@@ -35,16 +34,16 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Membe
     @Override
     public MatchdaylistViewAdapter.ViewHolder onCreateRealmViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_member_item, parent, false);
+                .inflate(R.layout.fragment_matchday_item, parent, false);
 
         return new ViewHolder((LinearLayout)view);
     }
 
     @Override
     public void onBindRealmViewHolder(final ViewHolder holder, final int position) {
-        final Member member = realmResults.get(position);
-        holder.mItem = member;
-        holder.mContentView.setText(member.getVorname() + " " + member.getNachname());
+        final Matchday matchday = realmResults.get(position);
+        holder.mItem = matchday;
+        holder.mContentView.setText(matchday.getDatum());
         CardView cardView = (CardView) holder.mView.findViewById(R.id.card_view);
         cardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -74,11 +73,11 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Membe
         });
     }
 
-    public MemberlistFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
+    public MatchdayListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
         return mOnFragmentListener;
     }
 
-    public void setOnFragmentListener(MemberlistFragment.OnListFragmentInteractionListener mOnFragmentListener) {
+    public void setOnFragmentListener(MatchdayListFragment.OnListFragmentInteractionListener mOnFragmentListener) {
         this.mOnFragmentListener =  mOnFragmentListener;
     }
 
@@ -88,7 +87,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Membe
         public final TextView mContentView;
         public final ImageView mButtonEdit;
         public final ImageView mButtonDelete;
-        public Member mItem;
+        public Matchday mItem;
 
         public ViewHolder(LinearLayout view) {
             super(view);

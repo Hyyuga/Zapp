@@ -61,7 +61,7 @@ public class MatchdayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_matchday);
+        setContentView(R.layout.activity_matchday_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,8 +73,6 @@ public class MatchdayActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-//        hashMapMemberMatchday = new HashMap<>();
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         // By using this method the tabs will be populated according to viewPager's count and
@@ -95,16 +93,16 @@ public class MatchdayActivity extends AppCompatActivity {
 
         RealmResults<Matchday> list = realmDBManager.list_all_matchdays();
 
-        matchday = new Matchday();
+        setMatchday(new Matchday());
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         String date = df.format(Calendar.getInstance().getTime());
-        matchday.setDatum(date);
+        getMatchday().setDatum(date);
 
         bus.register(this);
     }
 
     private void createMatchday() {
-        realmDBManager.insertRealmObject(matchday);
+        realmDBManager.insertRealmObject(getMatchday());
     }
 
     public void onEvent(PenaltyEvent event) {
@@ -116,13 +114,13 @@ public class MatchdayActivity extends AppCompatActivity {
     }
 
     private void updateMemberPenaltyResult(Member member, Penalty penalty) {
-        RealmList<MemberResult> memberResultList = matchday.getMemberResults();
+        RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
         BigDecimal resultPenaltyValue = null;
         if (memberResultList == null)
-            matchday.setMemberResults(new RealmList<MemberResult>());
+            getMatchday().setMemberResults(new RealmList<MemberResult>());
 
         MemberResult result = null;
-        for (MemberResult mResult : matchday.getMemberResults()) {
+        for (MemberResult mResult : getMatchday().getMemberResults()) {
             if (mResult.getMember().equals(member.getEmail())) {
                 result = mResult;
                 break;
@@ -139,7 +137,7 @@ public class MatchdayActivity extends AppCompatActivity {
             result.setResultsPenalty(new RealmList<MemberPenalyValue>());
             result.getResultsPenalty().add(resultPenalty);
             result.setMember(member.getEmail());
-            if(addPenalty) matchday.getMemberResults().add(result);
+            if(addPenalty) getMatchday().getMemberResults().add(result);
         } else {
             MemberPenalyValue resultPenalty = null;
             for (MemberPenalyValue value : result.getResultsPenalty()) {
@@ -160,13 +158,13 @@ public class MatchdayActivity extends AppCompatActivity {
     }
 
     private void updateMemberScoreResult(Member member, Score score) {
-        RealmList<MemberResult> memberResultList = matchday.getMemberResults();
+        RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
         BigDecimal resultScoreValue = null;
         if (memberResultList == null)
-            matchday.setMemberResults(new RealmList<MemberResult>());
+            getMatchday().setMemberResults(new RealmList<MemberResult>());
 
         MemberResult result = null;
-        for (MemberResult mResult : matchday.getMemberResults()) {
+        for (MemberResult mResult : getMatchday().getMemberResults()) {
             if (mResult.getMember().equals(member.getEmail())) {
                 result = mResult;
                 break;
@@ -183,7 +181,7 @@ public class MatchdayActivity extends AppCompatActivity {
             result.setResultsScore(new RealmList<MemberScoreValue>());
             result.getResultsScore().add(resultScore);
             result.setMember(member.getEmail());
-            if(addResult)matchday.getMemberResults().add(result);
+            if(addResult) getMatchday().getMemberResults().add(result);
         } else {
             MemberScoreValue resultScore = null;
             for (MemberScoreValue value : result.getResultsScore()) {
@@ -240,6 +238,14 @@ public class MatchdayActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public Matchday getMatchday() {
+        return matchday;
+    }
+
+    public void setMatchday(Matchday matchday) {
+        this.matchday = matchday;
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -261,7 +267,7 @@ public class MatchdayActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return MatchdayTabFragment.newInstance(position + 1, memberlist.get(position));
+            return null;//MatchdayTabFragment.newInstance(position + 1, memberlist.get(position));
         }
 
         @Override

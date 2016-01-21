@@ -11,14 +11,14 @@ import android.widget.Button;
 import io.realm.RealmObject;
 import sn.zapp.R;
 import sn.zapp.base.BaseDetailFragment;
-import sn.zapp.model.Member;
+import sn.zapp.model.Penalty;
 
 /**
  * Created by Steppo on 20.01.2016.
  */
 public class PenaltyBaseDetailFragment extends BaseDetailFragment{
 
-    private TextInputLayout vorname, nachname, email, address;
+    private TextInputLayout name, amount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class PenaltyBaseDetailFragment extends BaseDetailFragment{
             @Override
             public void onClick(View view) {
                 initFields(null);
-                Member newMember = new Member(vorname.getEditText().getText().toString(), nachname.getEditText().getText().toString(), null, email.getEditText().getText().toString(), address.getEditText().getText().toString());
-                realmDBManager.insertRealmObject(newMember);
+                Penalty newPenalty = new Penalty(name.getEditText().getText().toString(), amount.getEditText().getText().toString());
+                realmDBManager.insertRealmObject(newPenalty);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 boolean pop = manager.popBackStackImmediate();
                 baseListActivity.getFab().show();
@@ -46,7 +46,7 @@ public class PenaltyBaseDetailFragment extends BaseDetailFragment{
 
     @Override
     public int getDetailFragmentLayout() {
-        return R.layout.fragment_member_detail;
+        return R.layout.fragment_penalty_detail;
     }
 
     @Override
@@ -56,33 +56,29 @@ public class PenaltyBaseDetailFragment extends BaseDetailFragment{
             aView = view;
         else aView = getView();
 
-        vorname = (TextInputLayout) aView.findViewById(R.id.input_layout_firstname);
-        nachname = (TextInputLayout) aView.findViewById(R.id.input_layout_lastname);
-        email = (TextInputLayout) aView.findViewById(R.id.input_layout_email);
-        address = (TextInputLayout) aView.findViewById(R.id.input_layout_adress);
+        name = (TextInputLayout) aView.findViewById(R.id.input_layout_name);
+        amount = (TextInputLayout) aView.findViewById(R.id.input_layout_amount);
     }
 
     @Override
     public void setField(RealmObject object) {
-        Member member = (Member) object;
-        vorname.getEditText().setText(member.getVorname());
-        nachname.getEditText().setText(member.getNachname());
-        email.getEditText().setText(member.getEmail());
-        address.getEditText().setText(member.getAdresse());
+        Penalty penalty = (Penalty) object;
+        name.getEditText().setText(penalty.getName());
+        amount.getEditText().setText(penalty.getAmount());
     }
 
     @Override
     public String getEditTitle() {
-        return "Mitglied bearbeiten";
+        return "Strafe bearbeiten";
     }
 
     @Override
     public String getCreateTitle() {
-        return "Mitglieder anlegen";
+        return "Strafe anlegen";
     }
 
     @Override
     public String getActivityTitle() {
-        return "Mitglieder";
+        return "Strafen";
     }
 }

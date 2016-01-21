@@ -17,10 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import sn.zapp.location.LocationActivity;
-import sn.zapp.matchday.MatchdayActivity;
-import sn.zapp.member.MemberlActivity;
-import sn.zapp.penalty.PenaltyActivity;
-import sn.zapp.score.ScoreActivity;
+import sn.zapp.matchday.Matchday1Activity;
+import sn.zapp.member.MemberBaseListActivity;
+import sn.zapp.penalty.PenaltyBaseListActivity;
+import sn.zapp.score.ScoreBaseListActivity;
 import sn.zapp.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -111,14 +111,14 @@ public class MainActivity extends AppCompatActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startIntent(MemberlActivity.class);
+                    startIntent(MemberBaseListActivity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
 
-            View mainContent = findViewById(R.id.main_content);
-            if (mainContent != null) {
-                mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
-            }
+//            View mainContent = findViewById(R.id.main_content);
+//            if (mainContent != null) {
+//                mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
+//            }
 
             // Handle the camera action
         } else if (id == R.id.nav_home) {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startIntent(PenaltyActivity.class);
+                    startIntent(PenaltyBaseListActivity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
 
@@ -156,14 +156,14 @@ public class MainActivity extends AppCompatActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startIntent(ScoreActivity.class);
+                    startIntent(ScoreBaseListActivity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
         } else if (id == R.id.nav_matchday) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   startIntent(MatchdayActivity.class);
+                   startIntent(Matchday1Activity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
         }
@@ -173,51 +173,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private void startMatchday(){
-        Intent matchdayIntent = new Intent(this, MatchdayActivity.class);
-        startActivity(matchdayIntent);
-    }
-    private void startMembers(){
-        Intent memberIntent = new Intent(this, MemberlActivity.class);
-        startActivity(memberIntent);
-    }
     private void startIntent(Class clazzz){
         Intent newIntent = new Intent(this, clazzz);
         startActivity(newIntent);
     }
-
-
-//    private void goToNavDrawerItem(int item) {
-//        switch (item) {
-//            case NAVDRAWER_ITEM_MY_SCHEDULE:
-//                createBackStack(new Intent(this, MyScheduleActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_IO_LIVE:
-//                startActivity(new Intent(this, ExploreIOActivity.class));
-//                finish();
-//                break;
-//            case NAVDRAWER_ITEM_MAP:
-//                createBackStack(new Intent(this, MapActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_SOCIAL:
-//                createBackStack(new Intent(this, SocialActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_VIDEO_LIBRARY:
-//                createBackStack(new Intent(this, VideoLibraryActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_SIGN_IN:
-//                signInOrCreateAnAccount();
-//                break;
-//            case NAVDRAWER_ITEM_SETTINGS:
-//                createBackStack(new Intent(this, SettingsActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_ABOUT:
-//                createBackStack(new Intent(this, AboutActivity.class));
-//                break;
-//            case NAVDRAWER_ITEM_DEBUG:
-//                createBackStack(new Intent(this, DebugActivity.class));
-//                break;
-//        }
-
 }

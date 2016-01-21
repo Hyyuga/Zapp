@@ -10,13 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
+import sn.zapp.model.Matchday;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberPenalyValue;
+import sn.zapp.model.MemberResult;
+import sn.zapp.model.MemberScoreValue;
 
 public class MatchdayTabFragment extends Fragment{
 
     private Member member;
     private TabLayout tabLayout;
+    private RealmList<MemberPenalyValue> penaltyResult = null;
+    private RealmList<MemberScoreValue> resultScore = null;
 
 
     @Override
@@ -51,9 +60,21 @@ public class MatchdayTabFragment extends Fragment{
         return inflatedView;
     }
 
-    public static MatchdayTabFragment newInstance(int sectionNumber, Member member) {
+    public static MatchdayTabFragment newInstance(int sectionNumber, Member member, String datum) {
         MatchdayTabFragment fragment = new MatchdayTabFragment();
         fragment.setMember(member);
+        Realm realm = Realm.getInstance(ZappApplication.getAppContext());
+        Matchday results = realm.where(Matchday.class).equalTo("datum", datum).findFirst();
+        if(results != null && results.getMemberResults() != null) {
+            for (MemberResult memberResult: results.getMemberResults()) {
+                if(memberResult.getMember().equals(member.getEmail())){
+                    fragment.setPenaltyResult(memberResult.getResultsPenalty());
+                    fragment.setResultScore(memberResult.getResultsScore());
+                }
+            }
+        }
+
+
         return fragment;
     }
 
@@ -71,6 +92,22 @@ public class MatchdayTabFragment extends Fragment{
 
     public void setTabLayout(TabLayout tabLayout) {
         this.tabLayout = tabLayout;
+    }
+
+    public RealmList<MemberPenalyValue> getPenaltyResult() {
+        return penaltyResult;
+    }
+
+    public void setPenaltyResult(RealmList<MemberPenalyValue> penaltyResult) {
+        this.penaltyResult = penaltyResult;
+    }
+
+    public RealmList<MemberScoreValue> getResultScore() {
+        return resultScore;
+    }
+
+    public void setResultScore(RealmList<MemberScoreValue> resultScore) {
+        this.resultScore = resultScore;
     }
 
     public class PagerAdapter extends FragmentPagerAdapter {
@@ -97,10 +134,10 @@ public class MatchdayTabFragment extends Fragment{
 
             switch (position) {
                 case 0:
-                    TabPenalty tab1 = TabPenalty.newInstance(getMember());
+                    TabPenalty tab1 = TabPenalty.newInstance(getMember(), getPenaltyResult());
                     return tab1;
                 case 1:
-                    TabScore tab2 = TabScore.newInstance(getMember());
+                    TabScore tab2 = TabScore.newInstance(getMember(),getResultScore());
                     return tab2;
                 default:
                     return null;

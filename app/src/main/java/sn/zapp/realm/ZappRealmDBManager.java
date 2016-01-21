@@ -20,15 +20,17 @@ public class ZappRealmDBManager {
         realm = Realm.getInstance(ZappApplication.getAppContext());
     }
 
-    public long update_member(Member toMerge, Member newMember){
-        return -1;
-    }
-
     public long insertRealmObject(RealmObject object){
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(object);
         realm.commitTransaction();
         return 1;
+    }
+
+    public void deleteMatchday(Matchday item){
+        realm.beginTransaction();
+        realm.where(Matchday.class).equalTo("datum", item.getDatum()).findAll().clear();
+        realm.commitTransaction();
     }
 
     public void deleteMember(Member member){
@@ -50,9 +52,6 @@ public class ZappRealmDBManager {
         realm.commitTransaction();
     }
 
-    public int delete_member(Member member){
-        return -1;
-    }
     public RealmResults<Member> list_all_members(){
         return realm.where(Member.class).findAll();
     }
@@ -74,9 +73,3 @@ public class ZappRealmDBManager {
         return realm.where(Matchday.class).findAll();
     }
 }
-//        Member mMember = realm.createObject(Member.class);
-//        mMember.setAdresse(member.getAdresse());
-//        mMember.setEmail(member.getEmail());
-//        mMember.setGeburtstag(member.getGeburtstag());
-//        mMember.setVorname(member.getVorname());
-//        mMember.setNachname(member.getNachname());
