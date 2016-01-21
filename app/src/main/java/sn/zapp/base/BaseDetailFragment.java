@@ -72,7 +72,7 @@ public abstract class BaseDetailFragment extends Fragment{
         return selectedItem;
     }
 
-    public void setSelectedItem(RealmObject selectedItem) {
+    protected void setSelectedItem(RealmObject selectedItem) {
         this.selectedItem = selectedItem;
     }
 

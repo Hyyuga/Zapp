@@ -14,6 +14,7 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 
@@ -51,6 +52,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
                 int action = event.getActionMasked();
                 if (null != getmOnFragmentListener() &&  action == MotionEvent.ACTION_DOWN) {
                     getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
+                    ZappApplication.setViewState("Edit");
                 }
                 return false;
             }

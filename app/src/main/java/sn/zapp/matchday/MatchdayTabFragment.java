@@ -112,22 +112,11 @@ public class MatchdayTabFragment extends Fragment{
 
     public class PagerAdapter extends FragmentPagerAdapter {
         int mNumOfTabs;
-//        private FragmentManager manager;
 
         public PagerAdapter(FragmentManager fm, int NumOfTabs) {
             super(fm);
             this.mNumOfTabs = NumOfTabs;
-//            this.manager = fm;
         }
-
-//        public Fragment getActiveFragment(ViewPager container, int position) {
-//            String name = makeFragmentName(container.getId(), position);
-//            return  manager.findFragmentByTag(name);
-//        }
-//
-//        private  String makeFragmentName(int viewId, int index) {
-//            return "android:switcher:" + viewId + ":" + index;
-//        }
 
         @Override
         public Fragment getItem(int position) {

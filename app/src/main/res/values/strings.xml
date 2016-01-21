@@ -18,6 +18,7 @@
     <string name="hint_penaltyname">Name der Strafe</string>
     <string name="hint_penaltyamount">Höhe in </string>
     <string name="hint_scorename">Name des Erfolgs</string>
+    <string name="hint_date">Datum auswählen</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="err_msg_name">Enter your full name</string>
     <string name="err_msg_email">Enter valid email address</string>

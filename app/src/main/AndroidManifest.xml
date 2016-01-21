@@ -65,7 +65,7 @@
                 android:value="sn.zapp.MainActivity" />
         </activity>
         <activity
-            android:name=".matchday.Matchday1Activity"
+            android:name=".matchday.MatchdayListActivity"
             android:label="@string/title_activity_matchday1"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">

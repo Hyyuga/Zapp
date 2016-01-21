@@ -41,6 +41,7 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
             final View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.tab_penalty_item, parent, false);
             final ViewHolderPenalty viewHolderPenalty = new ViewHolderPenalty(view);
+            String viewState = ZappApplication.getViewState();
             if(getResultPenalty() == null) {
                 viewHolderPenalty.mButtonAdd.setOnClickListener(new View.OnClickListener() {
                     @Override

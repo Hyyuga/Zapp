@@ -8,11 +8,16 @@ import android.content.Context;
  */
 public class ZappApplication extends Application{
     private static ZappApplication sInstance;
+    private static String viewState;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        viewState = "Show";
+    }
+    public static void setViewState(String arGviewState){
+        viewState = arGviewState;
     }
 
     public static ZappApplication getInstance(){
@@ -22,6 +27,10 @@ public class ZappApplication extends Application{
     public static Context getAppContext(){
         return  sInstance.getApplicationContext();
     }
+    public static String getViewState(){
+        return  sInstance.viewState;
+    }
+
 
     public static Class isNumeric(String str) {
 

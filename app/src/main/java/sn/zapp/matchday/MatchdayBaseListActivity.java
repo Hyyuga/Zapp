@@ -1,4 +1,4 @@
-package sn.zapp.penalty;
+package sn.zapp.matchday;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,13 +7,16 @@ import io.realm.RealmObject;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.base.BaseListFragment;
-import sn.zapp.model.Penalty;
+import sn.zapp.member.MemberBaseDetailFragment;
+import sn.zapp.member.MemberBaseListFragment;
+import sn.zapp.model.Matchday;
+import sn.zapp.model.Member;
 import sn.zapp.util.Action;
 
 /**
  * Created by Steppo on 20.01.2016.
  */
-public class PenaltyBaseListActivity extends BaseListActivity implements BaseListFragment.OnListFragmentInteractionListener{
+public class MatchdayBaseListActivity extends BaseListActivity implements BaseListFragment.OnListFragmentInteractionListener{
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -29,29 +32,29 @@ public class PenaltyBaseListActivity extends BaseListActivity implements BaseLis
 
     @Override
     protected void deleteListObject(RealmObject item) {
-        realmDBManager.deletePenalty((Penalty) item);
+        realmDBManager.deleteMatchday((Matchday) item);
     }
 
     @Override
     public void onListFragmentInteraction(RealmObject item, Action action) {
-        Penalty penalty = (Penalty) item;
+        Matchday matchday = (Matchday) item;
         if (action.equals(Action.DELETE))
-            deleteListObject(penalty);
+            deleteListObject(matchday);
         else openListItemDetailView(item, action);
     }
 
     @Override
     protected String getActivityTitle() {
-        return "Strafen";
+        return "Ergebnisse";
     }
 
     @Override
     protected BaseListFragment getListFragment() {
-        return new PenaltyBaseListFragment();
+        return new MatchdayBaseListFragment();
     }
 
     @Override
     protected BaseDetailFragment getBaseDetailFragment() {
-        return new PenaltyBaseDetailFragment();
+        return null;
     }
 }

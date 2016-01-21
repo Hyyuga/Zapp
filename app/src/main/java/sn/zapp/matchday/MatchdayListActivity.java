@@ -13,7 +13,7 @@ import sn.zapp.model.Matchday;
 import sn.zapp.realm.ZappRealmDBManager;
 import sn.zapp.util.Action;
 
-public class Matchday1Activity extends AppCompatActivity implements MatchdayListFragment.OnListFragmentInteractionListener{
+public class MatchdayListActivity extends AppCompatActivity implements MatchdayListFragment.OnListFragmentInteractionListener{
 
     private Toolbar toolbar = null;
     private FloatingActionButton fab = null;

@@ -48,7 +48,7 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked();
-                if (null != getmOnFragmentListener() && action == MotionEvent.ACTION_DOWN) {
+                if (null != getmOnFragmentListener() && action == MotionEvent.ACTION_UP) {
                     getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
                 }
                 return false;

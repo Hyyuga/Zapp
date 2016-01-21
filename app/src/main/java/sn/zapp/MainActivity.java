@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import sn.zapp.location.LocationActivity;
-import sn.zapp.matchday.Matchday1Activity;
+import sn.zapp.matchday.MatchdayListActivity;
 import sn.zapp.member.MemberBaseListActivity;
 import sn.zapp.penalty.PenaltyBaseListActivity;
 import sn.zapp.score.ScoreBaseListActivity;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     // delay to launch nav drawer item, to allow close animation to play
-    private static final int NAVDRAWER_LAUNCH_DELAY = 200;
+    private static final int NAVDRAWER_LAUNCH_DELAY = 250;
     protected static final int NAVDRAWER_ITEM_MY_SCHEDULE = 0;
     protected static final int NAVDRAWER_ITEM_IO_LIVE = 1;
 
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
 
-//            View mainContent = findViewById(R.id.main_content);
-//            if (mainContent != null) {
-//                mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
-//            }
+            View mainContent = findViewById(R.id.main_content);
+            if (mainContent != null) {
+                mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
+            }
 
             // Handle the camera action
         } else if (id == R.id.nav_home) {
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   startIntent(Matchday1Activity.class);
+                   startIntent(MatchdayListActivity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
         }
@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void startIntent(Class clazzz){
         Intent newIntent = new Intent(this, clazzz);
         startActivity(newIntent);

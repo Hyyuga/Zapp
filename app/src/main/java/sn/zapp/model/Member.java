@@ -1,6 +1,5 @@
 package sn.zapp.model;
 
-import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -10,41 +9,25 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Member extends RealmObject{
 
-    private Integer id;
-
     private String vorname;
     private String nachname;
     private String adresse;
     private String imageurl;
     @PrimaryKey
     private String email;
-    private Date geburtstag;
+    private String geburtstag;
 
     public Member() {
     }
 
-    public Member(String vorname, String nachname, Date geburtstag, String email, String adresse) {
+    public Member(String vorname, String nachname, String geburtstag, String email, String adresse) {
         this.vorname = vorname;
-        this.geburtstag = geburtstag;
+        this.setGeburtstag(geburtstag);
         this.nachname = nachname;
         this.adresse = adresse;
         this.setEmail(email);
     }
 //    }
-
-    /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * @return the vorname
@@ -58,20 +41,6 @@ public class Member extends RealmObject{
      */
     public void setVorname(String vorname) {
         this.vorname = vorname;
-    }
-
-    /**
-     * @return the geburtstag
-     */
-    public Date getGeburtstag() {
-        return geburtstag;
-    }
-
-    /**
-     * @param geburtstag the geburtstag to set
-     */
-    public void setGeburtstag(Date geburtstag) {
-        this.geburtstag = geburtstag;
     }
 
     /**
@@ -122,5 +91,13 @@ public class Member extends RealmObject{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGeburtstag() {
+        return geburtstag;
+    }
+
+    public void setGeburtstag(String geburtstag) {
+        this.geburtstag = geburtstag;
     }
 }

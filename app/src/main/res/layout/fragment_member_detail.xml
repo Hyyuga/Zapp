@@ -62,6 +62,18 @@
             android:hint="@string/hint_address"/>
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editText_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_date"/>
+    </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -80,7 +80,6 @@ public class MatchdayListFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Matchday item, Action action);
     }
 }
