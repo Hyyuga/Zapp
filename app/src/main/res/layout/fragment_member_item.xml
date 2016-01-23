@@ -12,75 +12,90 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/custom_bg">
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            >
 
-            <TextView
-                android:id="@+id/content"
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/imagePerson"
+                android:layout_width="75dp"
+                android:layout_height="95dp"
+                />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="1"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_toRightOf="@id/imagePerson"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/layout_line_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <View
+                <TextView
+                    android:id="@+id/tv_member_name"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:background="@android:color/black" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Name"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/tv_member_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/layout_line_name"
-                android:padding="5dp"
-                android:text="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+                    <!--android:id="@+id/layout_line_name"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/tv_member_name"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:padding="5dp">-->
 
-            <TextView
-                android:id="@+id/tv__member_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/tv_member_email"
-                android:padding="5dp"
-                android:text="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:background="@android:color/black" />-->
+                <!--</LinearLayout>-->
+
+                <TextView
+                    android:id="@+id/tv_member_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_member_name"
+                    android:padding="5dp"
+                    android:text="Email"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/tv__member_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_member_email"
+                    android:padding="5dp"
+                    android:text="Geburtstag"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
         </RelativeLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <!--<ImageView-->
+                <!--android:id="@+id/buttonEdit"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_weight="0.7"-->
+                <!--android:src="@drawable/ic_mode_edit_white_48dp" />-->
 
-            <ImageView
-                android:id="@+id/buttonEdit"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_weight="0.7"
-                android:src="@drawable/ic_mode_edit_white_48dp" />
-
-            <ImageView
-                android:id="@+id/buttonDelete"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="0dp"
-                android:layout_weight="0.7"
-                android:src="@drawable/ic_delete_white_48dp" />
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--android:id="@+id/buttonDelete"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_marginLeft="0dp"-->
+                <!--android:layout_weight="0.7"-->
+                <!--android:src="@drawable/ic_delete_white_48dp" />-->
+        <!--</LinearLayout>-->
     </sn.zapp.util.ZappCardView>
 </LinearLayout>

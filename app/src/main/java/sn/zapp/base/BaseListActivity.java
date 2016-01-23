@@ -76,7 +76,7 @@ public abstract class BaseListActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
-    protected void openListItemDetailView(RealmObject object, Action Action){
+    protected void openListItemDetailView(RealmObject object, Action action){
         final BaseDetailFragment fragment = getBaseDetailFragment();
         fragment.setSelectedListObject(object);
         handler.postDelayed(new Runnable() {
@@ -98,4 +98,5 @@ public abstract class BaseListActivity extends AppCompatActivity{
     protected abstract BaseListFragment getListFragment();
 
     protected abstract BaseDetailFragment getBaseDetailFragment();
+
 }

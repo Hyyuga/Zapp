@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.model.Matchday;
 import sn.zapp.realm.ZappRealmDBManager;
 import sn.zapp.util.Action;
@@ -57,6 +58,9 @@ public class MatchdayListActivity extends AppCompatActivity implements MatchdayL
     }
 
     private void openMatchdayView(Matchday matchday, Action action) {
+        //TODO Popup Member auswählen nur die nehmen
+        ZappApplication.setViewStatePenalty(action.name());
+        ZappApplication.setViewStateScore(action.name());
         final MatchdayFragment fragment = new MatchdayFragment();
         fragment.setMatchday(matchday);
         handler.postDelayed(new Runnable() {
@@ -91,6 +95,20 @@ public class MatchdayListActivity extends AppCompatActivity implements MatchdayL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getFab().show();
+        getToolbar().setTitle("Spieltage");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFab().show();
+        getToolbar().setTitle("Spieltage");
     }
 
     @Override

@@ -1,3 +1,3 @@
 package sn.zapp.util;
 
-public enum Action { CREATE, EDIT, DELETE, ADD, RESET, MINUS}
+public enum Action { SHOW, CREATE, EDIT, DELETE, EDITCREATE, ADD, RESET, MINUS}

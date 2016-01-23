@@ -97,5 +97,6 @@
     <string name="title_activity_list">ListActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_matchday1">Matchday1</string>
-
+    <string name="bottom_arrow">&#9660;</string>
+    <string name="left_arrow">&#9654;</string>
 </resources>

@@ -68,6 +68,31 @@ public class MatchdayListFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -75,7 +100,6 @@ public class MatchdayListFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-//        realmDBManager.close();
         super.onDestroy();
     }
 

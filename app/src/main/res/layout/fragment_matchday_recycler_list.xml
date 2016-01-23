@@ -8,4 +8,5 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     app:rrvLayoutType="LinearLayout"
+    app:rrvSwipeToDelete="true"
     tools:listitem="@layout/fragment_matchday_item" />

@@ -5,13 +5,25 @@
     android:orientation="horizontal"
     android:weightSum="6">
 
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:id="@+id/text_view_total_penalty"/>
+        android:layout_gravity="center|center_vertical"
+        android:layout_weight="0.5">
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="@string/left_arrow"/>
+        <TextView
+            android:id="@+id/text_view_total_penalty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="1"/>
+    </LinearLayout>
 
     <sn.zapp.util.ZappCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -20,6 +32,9 @@
         android:layout_width="0dp"
         android:layout_weight="5"
         android:layout_height="@dimen/cardview_height_penalty"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/custom_bg"
         >
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

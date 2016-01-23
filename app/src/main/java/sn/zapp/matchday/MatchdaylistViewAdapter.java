@@ -14,7 +14,6 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
-import sn.zapp.ZappApplication;
 import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 
@@ -50,9 +49,8 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked();
-                if (null != getmOnFragmentListener() &&  action == MotionEvent.ACTION_DOWN) {
-                    getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
-                    ZappApplication.setViewState("Edit");
+                if (null != getmOnFragmentListener() &&  action == MotionEvent.ACTION_UP) {
+                    getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.SHOW);
                 }
                 return false;
             }
@@ -73,6 +71,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
                 getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.DELETE);
             }
         });
+        holder.mLogo.setImageResource(R.mipmap.zapplogo);
     }
 
     public MatchdayListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
@@ -85,10 +84,10 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
 
     public static class ViewHolder extends RealmViewHolder{
         public final View mView;
-//        public final TextView mIdView;
         public final TextView mContentView;
         public final ImageView mButtonEdit;
         public final ImageView mButtonDelete;
+        public final ImageView mLogo;
         public Matchday mItem;
 
         public ViewHolder(LinearLayout view) {
@@ -97,6 +96,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
             mContentView = (TextView) view.findViewById(R.id.content);
             mButtonEdit = (ImageView) view.findViewById(R.id.buttonEdit);
             mButtonDelete = (ImageView) view.findViewById(R.id.buttonDelete);
+            mLogo = (ImageView) view.findViewById(R.id.logo);
         }
 
         @Override

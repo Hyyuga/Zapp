@@ -1,7 +1,10 @@
 package sn.zapp.matchday;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,8 +22,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import io.realm.Realm;
 import io.realm.RealmList;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.event.PenaltyEvent;
 import sn.zapp.event.ScoreEvent;
 import sn.zapp.model.Matchday;
@@ -31,6 +36,7 @@ import sn.zapp.model.MemberScoreValue;
 import sn.zapp.model.Penalty;
 import sn.zapp.model.Score;
 import sn.zapp.realm.ZappRealmDBManager;
+import sn.zapp.util.Action;
 
 public class MatchdayFragment extends Fragment {
 
@@ -51,6 +57,12 @@ public class MatchdayFragment extends Fragment {
     private ZappRealmDBManager realmDBManager = null;
     private EventBus bus = EventBus.getDefault();
     private Matchday matchday = null;
+    private MatchdayListActivity baseListActivity;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,14 +76,12 @@ public class MatchdayFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-//        hashMapMemberMatchday = new HashMap<>();
-
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         // By using this method the tabs will be populated according to viewPager's count and
         // with the name from the pagerAdapter getPageTitle()
         tabLayout.setTabsFromPagerAdapter(mSectionsPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
-        realmDBManager = new ZappRealmDBManager();
+
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -82,21 +92,55 @@ public class MatchdayFragment extends Fragment {
                 createMatchday();
             }
         });
+        if(ZappApplication.getViewStatePenalty().equals(Action.SHOW.name()))
+            fab.hide();
+
+        FloatingActionButton fabCancel = (FloatingActionButton) view.findViewById(R.id.fab_cancel);
+        fabCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if(ZappApplication.getViewStatePenalty().equals(Action.EDITCREATE.name())) {
+//                    try {
+//                        Realm.getInstance(ZappApplication.getAppContext()).cancelTransaction();
+//                    }catch (IllegalStateException e){
+//                        //Do nothing
+//                    }
+//                }
+                onBack();
+            }
+        });
+
+        realmDBManager = new ZappRealmDBManager();
+
+
 
         if(this.matchday == null){
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
             String date = df.format(Calendar.getInstance().getTime());
             setMatchday(new Matchday());
             getMatchday().setDatum(date);
-        }
-
-        if (!bus.isRegistered(this))bus.register(this);
+            baseListActivity.getToolbar().setTitle("Spieltag anlegen");
+        } else baseListActivity.getToolbar().setTitle("Spieltag bearbeiten");
+        if(ZappApplication.getViewStatePenalty().equals(Action.SHOW.name()))
+            baseListActivity.getToolbar().setTitle("Spieltag ansehen");
 
         return view;
     }
 
     private void createMatchday() {
-        realmDBManager.insertRealmObject(getMatchday());
+        if(!ZappApplication.getViewStatePenalty().equals(Action.EDITCREATE.name())
+                && !ZappApplication.getViewStatePenalty().equals(Action.EDITCREATE.name()))
+            realmDBManager.insertRealmObject(getMatchday());
+        onBack();
+    }
+
+    private void onBack() {
+        ZappApplication.setViewStatePenalty(Action.SHOW.name());
+        ZappApplication.setViewStateScore(Action.SHOW.name());
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        boolean pop = manager.popBackStackImmediate();
+        baseListActivity.getFab().show();
+        baseListActivity.getToolbar().setTitle("Spieltage");
     }
 
     public void onEvent(PenaltyEvent event) {
@@ -108,6 +152,9 @@ public class MatchdayFragment extends Fragment {
     }
 
     private void updateMemberPenaltyResult(Member member, Penalty penalty) {
+        if(ZappApplication.getViewStatePenalty().equals(Action.EDITCREATE.name()))
+            Realm.getInstance(ZappApplication.getAppContext()).beginTransaction();
+
         RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
         BigDecimal resultPenaltyValue = null;
         if (memberResultList == null)
@@ -150,9 +197,16 @@ public class MatchdayFragment extends Fragment {
             } else resultPenalty.setValue(resultPenalty.getValue().add(new BigDecimal(1)));
 
         }
+        if(ZappApplication.getViewStatePenalty().equals(Action.EDITCREATE.name()))
+            Realm.getInstance(ZappApplication.getAppContext()).commitTransaction();
+
+        Snackbar.make(getView(),"Hallo", Snackbar.LENGTH_LONG);
     }
 
     private void updateMemberScoreResult(Member member, Score score) {
+        if(ZappApplication.getViewStateScore().equals(Action.EDITCREATE.name()))
+            Realm.getInstance(ZappApplication.getAppContext()).beginTransaction();
+
         RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
         BigDecimal resultScoreValue = null;
         if (memberResultList == null)
@@ -195,7 +249,8 @@ public class MatchdayFragment extends Fragment {
             } else resultScore.setValue(resultScore.getValue().add(new BigDecimal(1)));
 
         }
-
+        if(ZappApplication.getViewStateScore().equals(Action.EDITCREATE.name()))
+            Realm.getInstance(ZappApplication.getAppContext()).commitTransaction();
     }
 
     @Override
@@ -255,6 +310,7 @@ public class MatchdayFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (!bus.isRegistered(this))bus.register(this);
 //        if(this.matchday != null) {
 //            ScoreResultEvent event = new ScoreResultEvent();
 //            event.matchday = matchday;
@@ -263,7 +319,17 @@ public class MatchdayFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity) {
+            baseListActivity = (MatchdayListActivity) context;
+        }
+    }
+
+    @Override
     public void onStop() {
+        if (bus.isRegistered(this))bus.unregister(this);
         super.onStop();
     }
 }

@@ -12,24 +12,23 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="60dp"
         android:layout_height="60dp"
-
-        android:src="@drawable/zapplogo" />
+        android:src="@drawable/ic_share_white_48dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:text="Zappenduster 05"
-        android:textSize="50px"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textSize="50px" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40px"
-        android:text="Because Kegeln matters!!! Bacardy Feeling" />
+        android:text="Because Kegeln matters!!! Bacardy Feeling"
+        android:textSize="40px" />
 </LinearLayout>

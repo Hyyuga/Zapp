@@ -1,7 +1,10 @@
 package sn.zapp.matchday;
 
+import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,13 +29,14 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
     private final List<Penalty> mValues;
     private Member member = null;
     private RealmList<MemberPenalyValue> resultPenalty = null;
-//    EventBus bus = EventBus.getDefault();
     private VHHeader header;
+    protected static Handler handler;
 
     public HeaderAdapterPenalty(List<Penalty> data, Member member, RealmList<MemberPenalyValue> resultPenalty) {
         this.mValues = data;
         this.setMember(member);
         this.setResultPenalty(resultPenalty);
+        handler = new Handler();
     }
 
     @Override
@@ -41,20 +45,44 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
             final View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.tab_penalty_item, parent, false);
             final ViewHolderPenalty viewHolderPenalty = new ViewHolderPenalty(view);
-            String viewState = ZappApplication.getViewState();
-            if(getResultPenalty() == null) {
-                viewHolderPenalty.mButtonAdd.setOnClickListener(new View.OnClickListener() {
+            if (!ZappApplication.getViewStatePenalty().equals(Action.SHOW.name())) {
+                CardView cardView = (CardView) viewHolderPenalty.mView.findViewById(R.id.card_view);
+                cardView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
-                        addAMount(viewHolderPenalty);
-                        viewHolderPenalty.addValue();
-                        PenaltyEvent event = new PenaltyEvent();
-                        event.setMember(getMember());
-                        event.setPenalty(viewHolderPenalty.mItem);
-                        event.setAction(Action.ADD);
-                        EventBus.getDefault().post(event);
+                    public boolean onTouch(View v, MotionEvent event) {
+                        int action = event.getActionMasked();
+                        if (action == MotionEvent.ACTION_UP) {
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addAMount(viewHolderPenalty);
+                                    viewHolderPenalty.addValue();
+                                    PenaltyEvent events = new PenaltyEvent();
+                                    events.setMember(getMember());
+                                    events.setPenalty(viewHolderPenalty.mItem);
+                                    events.setAction(Action.ADD);
+                                    EventBus.getDefault().post(events);
+                                }
+                            }, 350);
+
+                        }
+                        return false;
                     }
+
                 });
+//                String viewState = ZappApplication.getViewStatePenalty();
+//                viewHolderPenalty.mButtonAdd.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        addAMount(viewHolderPenalty);
+//                        viewHolderPenalty.addValue();
+//                        PenaltyEvent event = new PenaltyEvent();
+//                        event.setMember(getMember());
+//                        event.setPenalty(viewHolderPenalty.mItem);
+//                        event.setAction(Action.ADD);
+//                        EventBus.getDefault().post(event);
+//                    }
+//                });
                 viewHolderPenalty.mButtonMinus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -67,7 +95,11 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
                         EventBus.getDefault().post(event);
                     }
                 });
+            } else {
+                viewHolderPenalty.mButtonMinus.setVisibility(View.GONE);
+                viewHolderPenalty.mButtonAdd.setVisibility(View.GONE);
             }
+            viewHolderPenalty.mButtonAdd.setVisibility(View.GONE);
             return viewHolderPenalty;
         } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext())
@@ -84,17 +116,37 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderPenalty) {
             final ViewHolderPenalty viewHolderPenalty = (ViewHolderPenalty) holder;
+//            viewHolderPenalty.mItem = getItem(position);
+//            String penaltyTotal = null;
+//            String viewState = ZappApplication.getViewStatePenalty();
+//            if(!viewState.equals(Action.CREATE.name()) && !viewState.equals(Action.EDITCREATE.name())) {
+//                for (MemberPenalyValue result : getResultPenalty()) {
+//                    if(result.getPenalty().equals(viewHolderPenalty.mItem)){
+//                        penaltyTotal = result.getDbValue();
+//                    }
+//                }
+//                if(penaltyTotal == null)
+//                    penaltyTotal = viewHolderPenalty.mPenaltyValue.toString();
+//                if(viewState.equals(Action.EDIT.name()))
+//                    ZappApplication.setViewStatePenalty(Action.EDITCREATE.name());
+//            }
+//            if(penaltyTotal == null)
+//                penaltyTotal =  viewHolderPenalty.mPenaltyValue.toString();
+
+//            viewHolderPenalty.mPenaltyValue = new BigDecimal(penaltyTotal);
+//            viewHolderPenalty.mTextViewName.setText(mValues.get(position - 1).getName() + " (" + mValues.get(position - 1).getAmount().toString() + " € )");
+//            viewHolderPenalty.mPenaltyTotal.setText(penaltyTotal);
             viewHolderPenalty.mItem = getItem(position);
             String penaltyTotal = null;
-            if(getResultPenalty() != null) {
+            if (getResultPenalty() != null) {
                 for (MemberPenalyValue result : getResultPenalty()) {
-                    if(result.getPenalty().equals(viewHolderPenalty.mItem)){
+                    if (result.getPenalty().equals(viewHolderPenalty.mItem)) {
                         penaltyTotal = result.getDbValue();
                     }
                 }
-                if(penaltyTotal == null) penaltyTotal = viewHolderPenalty.mPenaltyValue.toString();
+                if (penaltyTotal == null) penaltyTotal = viewHolderPenalty.mPenaltyValue.toString();
             }
-            if(penaltyTotal == null)penaltyTotal =  viewHolderPenalty.mPenaltyValue.toString();
+            if (penaltyTotal == null) penaltyTotal = viewHolderPenalty.mPenaltyValue.toString();
             viewHolderPenalty.mContentView.setText(mValues.get(position - 1).getName() + " (" + mValues.get(position - 1).getAmount().toString() + " € )");
             viewHolderPenalty.mPenaltyTotal.setText(penaltyTotal);
         } else if (holder instanceof VHHeader) {

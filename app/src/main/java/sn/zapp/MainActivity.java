@@ -147,8 +147,12 @@ public class MainActivity extends AppCompatActivity
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/groups/106903569375159/?fref=ts"));
             startActivity(browserIntent);
         } else if (id == R.id.nav_location) {
-            Intent locationIntent = new Intent(this, LocationActivity.class);
-            startActivity(locationIntent);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startIntent(LocationActivity.class);
+                }
+            }, NAVDRAWER_LAUNCH_DELAY);
         } else if (id == R.id.nav_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);

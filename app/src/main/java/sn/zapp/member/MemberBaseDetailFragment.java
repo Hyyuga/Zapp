@@ -29,21 +29,22 @@ import sn.zapp.model.Member;
 /**
  * Created by Steppo on 20.01.2016.
  */
-public class MemberBaseDetailFragment extends BaseDetailFragment{
+public class MemberBaseDetailFragment extends BaseDetailFragment {
 
     private TextInputLayout vorname, nachname, email, address, date;
+    private Date utilDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        if(getSelectedItem() == null)setSelectedItem(new Member());
+        if (getSelectedItem() == null) setSelectedItem(new Member());
         Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         date = (TextInputLayout) view.findViewById(R.id.input_layout_date);
         date.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     DialogFragment newFragment = new DatePickerFragment();
                     newFragment.show(getChildFragmentManager(), "datePicker");
                 }
@@ -54,7 +55,7 @@ public class MemberBaseDetailFragment extends BaseDetailFragment{
             public void onClick(View view) {
                 initFields(null);
                 setSelectedListObject(new Member(vorname.getEditText().getText().toString(), nachname.getEditText().getText().toString(), date.getEditText().getText().toString(), email.getEditText().getText().toString(), address.getEditText().getText().toString()));
-                realmDBManager.insertRealmObject((Member)getSelectedItem());
+                realmDBManager.insertRealmObject((Member) getSelectedItem());
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 boolean pop = manager.popBackStackImmediate();
                 baseListActivity.getFab().show();
@@ -74,11 +75,7 @@ public class MemberBaseDetailFragment extends BaseDetailFragment{
         return R.layout.fragment_member_detail;
     }
 
-//    public final Member getSelectedMember(){
-//        return (Member)getSelectedItem();
-//    }
-
-    public void onEvent(DatePickerEvent event){
+    public void onEvent(DatePickerEvent event) {
         ((Member) getSelectedItem()).setGeburtstag(event.getDate());
         date.getEditText().setText(event.getDate());
     }
@@ -113,15 +110,15 @@ public class MemberBaseDetailFragment extends BaseDetailFragment{
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-            String date = df.format(new Date(year, month, day));
+            String date = df.format(new Date(year-1900, month, day));
             EventBus.getDefault().post(new DatePickerEvent(date));
         }
     }
 
     private boolean validateEmailasd(Pattern pattern, Matcher matcher, String email) {
         matcher = pattern.matcher(email);
-        boolean b =  matcher.matches();
-        return  b;
+        boolean b = matcher.matches();
+        return b;
     }
 
     @Override
@@ -134,7 +131,7 @@ public class MemberBaseDetailFragment extends BaseDetailFragment{
         date.getEditText().setText(member.getGeburtstag());
     }
 
-    private boolean validateEmail(){
+    private boolean validateEmail() {
         String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = null;
@@ -160,3 +157,22 @@ public class MemberBaseDetailFragment extends BaseDetailFragment{
         return "Mitglieder";
     }
 }
+
+//Calendar now = Calendar.getInstance();
+//final com.wdullaer.materialdatetimepicker.date.DatePickerDialog d = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+//        new com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog, int year, int monthOfYear, int dayOfMonth) {
+//                Calendar checkedCalendar = Calendar.getInstance();
+//                checkedCalendar.set(year, monthOfYear, dayOfMonth);
+//                utilDate = checkedCalendar.getTime();
+//                date.getEditText().setText(DateFormatter.convertDateToString(utilDate));
+//            }
+//        },
+//        now.get(Calendar.YEAR),
+//        now.get(Calendar.MONTH),
+//        now.get(Calendar.DAY_OF_MONTH)
+//);
+//d.setMaxDate(now);
+//        d.show((getActivity()).getFragmentManager(), this.getClass().getName());
+//

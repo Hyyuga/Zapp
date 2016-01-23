@@ -19,10 +19,34 @@ public class MemberBaseListFragment extends BaseListFragment {
 
         RealmResults<Member> list = realmDBManager.list_all_members();
 
-        MemberBaseListViewAdapter adapter = new MemberBaseListViewAdapter(this.getActivity(), list, true, true);
+        MemberListViewAdapter adapter = new MemberListViewAdapter(this.getActivity(), list, true, true);
         adapter.setOnFragmentListener(mListener);
         mUiRecyclerView.setAdapter(adapter);
 
         return view;
     }
+
+//    private RealmResults<Member> asyncLoadMoreQuotes() {
+//        RealmResults<Member> results = null;
+//        AsyncTask<Void, Void, RealmResults<Member>> remoteItem = new AsyncTask<Void, Void, RealmResults<Member>>() {
+//            @Override
+//            protected RealmResults<Member> doInBackground(Void... params) {
+//                // Add some delay to the refresh/remove action.
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                }
+//                return realmDBManager.list_all_members();
+//            }
+//        };
+//        try {
+//            results = remoteItem.execute().get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return  results;
+//    }
 }

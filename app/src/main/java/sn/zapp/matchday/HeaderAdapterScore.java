@@ -1,7 +1,10 @@
 package sn.zapp.matchday;
 
+import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,9 +16,9 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.event.ScoreEvent;
 import sn.zapp.model.Member;
-import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.model.MemberScoreValue;
 import sn.zapp.model.Score;
 import sn.zapp.util.Action;
@@ -25,11 +28,13 @@ public class HeaderAdapterScore extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final List<Score> mValues;
     private RealmList<MemberScoreValue> resultScore;
     private Member member = null;
+    protected static Handler handler;
 
     public HeaderAdapterScore(List<Score> data, Member member, RealmList<MemberScoreValue> resultPenalty) {
         this.mValues = data;
         this.setMember(member);
         this.setResultScore(resultPenalty);
+        handler = new Handler();
     }
 
     @Override
@@ -38,18 +43,42 @@ public class HeaderAdapterScore extends RecyclerView.Adapter<RecyclerView.ViewHo
                 .inflate(R.layout.tab_score_item, parent, false);
 
         final ViewHolderScore viewHolderScore = new ViewHolderScore(view);
-        if(getResultScore()== null) {
-            viewHolderScore.mButtonAdd.setOnClickListener(new View.OnClickListener() {
+        String viewState = ZappApplication.getViewStateScore();
+        if (!ZappApplication.getViewStatePenalty().equals(Action.SHOW.name())) {
+            CardView cardView = (CardView) viewHolderScore.mView.findViewById(R.id.card_view);
+            cardView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
-                    viewHolderScore.addValue();
-                    ScoreEvent event = new ScoreEvent();
-                    event.setMember(getMember());
-                    event.setScore(viewHolderScore.mItem);
-                    event.setAction(Action.ADD);
-                    EventBus.getDefault().post(event);
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getActionMasked();
+                    if (action == MotionEvent.ACTION_UP) {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewHolderScore.addValue();
+                                ScoreEvent event = new ScoreEvent();
+                                event.setMember(getMember());
+                                event.setScore(viewHolderScore.mItem);
+                                event.setAction(Action.ADD);
+                                EventBus.getDefault().post(event);
+                            }
+                        }, 350);
+
+                    }
+                    return false;
                 }
+
             });
+//            viewHolderScore.mButtonAdd.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    viewHolderScore.addValue();
+//                    ScoreEvent event = new ScoreEvent();
+//                    event.setMember(getMember());
+//                    event.setScore(viewHolderScore.mItem);
+//                    event.setAction(Action.ADD);
+//                    EventBus.getDefault().post(event);
+//                }
+//            });
             viewHolderScore.mButtonMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,7 +89,11 @@ public class HeaderAdapterScore extends RecyclerView.Adapter<RecyclerView.ViewHo
                     event.setAction(Action.MINUS);
                 }
             });
+        } else {
+            viewHolderScore.mButtonMinus.setVisibility(View.GONE);
+            viewHolderScore.mButtonAdd.setVisibility(View.GONE);
         }
+        viewHolderScore.mButtonAdd.setVisibility(View.GONE);
         return viewHolderScore;
     }
 
@@ -68,20 +101,39 @@ public class HeaderAdapterScore extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderScore) {
             final ViewHolderScore viewHolderScore = (ViewHolderScore) holder;
-            Score score = getItem(position);
+//            Score score = getItem(position);
+//            viewHolderScore.mItem = getItem(position);
+//            String scoreTotal = null;
+//            String viewState = ZappApplication.getViewStateScore();
+//            if(!viewState.equals(Action.CREATE.name()) && !viewState.equals(Action.EDITCREATE.name())) {
+//                for (MemberScoreValue result : getResultScore()) {
+//                    if(result.getScore().equals(viewHolderScore.mItem)){
+//                        scoreTotal = result.getDbValue();
+//                    }
+//                }
+//                if(scoreTotal == null)
+//                    scoreTotal = viewHolderScore.mScoreValue.toString();
+//                if(viewState.equals(Action.EDIT.name()))
+//                    ZappApplication.setViewStateScore(Action.EDITCREATE.name());
+//            }
+//            if(scoreTotal == null)
+//                scoreTotal =  viewHolderScore.mScoreValue.toString();
+//            viewHolderScore.mScoreValue = new BigDecimal(scoreTotal);
+//            viewHolderScore.mScoreText.setText(score.getName());
+//            viewHolderScore.mScoreTotal.setText(scoreTotal);
             viewHolderScore.mItem = getItem(position);
-            String scoreTotal = null;
-            if(getResultScore() != null) {
+            String penaltyTotal = null;
+            if (getResultScore() != null) {
                 for (MemberScoreValue result : getResultScore()) {
-                    if(result.getScore().equals(viewHolderScore.mItem)){
-                        scoreTotal = result.getDbValue();
+                    if (result.getScore().equals(viewHolderScore.mItem)) {
+                        penaltyTotal = result.getDbValue();
                     }
                 }
-                if(scoreTotal == null) scoreTotal = viewHolderScore.mScoreValue.toString();
+                if (penaltyTotal == null) penaltyTotal = viewHolderScore.mScoreValue.toString();
             }
-            if(scoreTotal == null)scoreTotal =  viewHolderScore.mScoreValue.toString();
-            viewHolderScore.mScoreText.setText(score.getName());
-            viewHolderScore.mScoreTotal.setText(scoreTotal);
+            if (penaltyTotal == null) penaltyTotal = viewHolderScore.mScoreValue.toString();
+            viewHolderScore.mScoreText.setText(mValues.get(position).getName());
+            viewHolderScore.mScoreTotal.setText(penaltyTotal);
         }
     }
 
@@ -139,11 +191,12 @@ public class HeaderAdapterScore extends RecyclerView.Adapter<RecyclerView.ViewHo
             return super.toString() + " '" + mScoreText.getText() + "'";
         }
 
-        public void addValue(){
+        public void addValue() {
             mScoreValue = mScoreValue.add(new BigDecimal(1));
             notifyDataSetChanged();
         }
-        public void resetValue(){
+
+        public void resetValue() {
             mScoreValue = new BigDecimal(0);
             notifyDataSetChanged();
         }
