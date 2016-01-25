@@ -16,8 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import sn.zapp.championship.ChampionshipBaseListActivity;
 import sn.zapp.location.LocationActivity;
-import sn.zapp.matchday.MatchdayListActivity;
+import sn.zapp.matchday.soon.MatchdayBaseListActivity;
 import sn.zapp.member.MemberBaseListActivity;
 import sn.zapp.penalty.PenaltyBaseListActivity;
 import sn.zapp.score.ScoreBaseListActivity;
@@ -30,11 +31,8 @@ public class MainActivity extends AppCompatActivity
     // different Activities of the app through the Nav Drawer
     private static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
 
-    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     // delay to launch nav drawer item, to allow close animation to play
     private static final int NAVDRAWER_LAUNCH_DELAY = 250;
-    protected static final int NAVDRAWER_ITEM_MY_SCHEDULE = 0;
-    protected static final int NAVDRAWER_ITEM_IO_LIVE = 1;
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -121,14 +119,18 @@ public class MainActivity extends AppCompatActivity
             }
 
             // Handle the camera action
-        } else if (id == R.id.nav_home) {
-            MainFragment fragment = new MainFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+        }  else if (id == R.id.nav_championship) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startIntent(ChampionshipBaseListActivity.class);
+                }
+            }, NAVDRAWER_LAUNCH_DELAY);
 
-
+            View mainContent = findViewById(R.id.main_content);
+            if (mainContent != null) {
+                mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
+            }
         } else if (id == R.id.nav_penalties) {
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   startIntent(MatchdayListActivity.class);
+                   startIntent(MatchdayBaseListActivity.class);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
         }

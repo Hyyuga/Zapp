@@ -1,4 +1,4 @@
-package sn.zapp.matchday;
+package sn.zapp.matchday.soon;
 
 import android.content.Context;
 
@@ -22,9 +22,5 @@ public class MatchdayBaseListViewAdapter extends BaseListViewAdapter {
         holder.mItem = matchday;
         holder.mContentView.setText(matchday.getDatum());
         super.onBindRealmViewHolder(holder, position);
-    }
-
-    @Override
-    protected void setBindHolderContentText() {
     }
 }

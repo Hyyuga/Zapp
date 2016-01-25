@@ -6,6 +6,9 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:layout_marginLeft="@dimen/detail_layout_margin"
+    android:layout_marginRight="@dimen/detail_layout_margin"
+    android:layout_marginTop="@dimen/detail_layout_margin">
     >
 
     <android.support.design.widget.TextInputLayout
@@ -14,7 +17,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/editText_amount"
+            android:id="@+id/editText_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"

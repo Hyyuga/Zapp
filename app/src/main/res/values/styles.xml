@@ -6,8 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="zapp_card_view_style">@style/ZappCardView</item>
-        <!--<item name="android:colorBackground">@color/colorPrimaryDark</item>-->
+        <!--<item name="zapp_card_view_style">@style/ZappCardView</item>-->
+        <!--<item name="android:textViewStyle">@style/MyTextView</item>-->
+        <!--<item name="android:background">#CBA</item>-->
         <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
         <!--<item name="android:textViewStyle">@style/MyTextView</item>-->
         <!--<item name="android:colorControlNormal">#c5c5c5</item>-->
@@ -35,15 +36,19 @@
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="MyTextView" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
     <style name="ZappCardView" parent="CardView">
-        <item name="cardBackgroundColor">@color/colorLightGrey</item>
+        <!--<item name="cardBackgroundColor">@color/colorLightGrey</item>-->
         <!--<item name="cardCornerRadius">4dp</item>-->
         <item name="cardUseCompatPadding">true</item>
         <item name="cardElevation">8dp</item>
     </style>
-
+    <!--<style name="ZappDetailLayout" parent="Line">-->
+        <!--<item name="android:layout_marginLeft">12dp</item>-->
+        <!--<item name="android:layout_marginRight">12dp</item>-->
+        <!--<item name="android:layout_marginTop">12dp</item>-->
+    <!--</style>-->
 
 </resources>

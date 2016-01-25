@@ -11,45 +11,32 @@
         android:layout_height="95dp"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/custom_bg"
-        android:weightSum="6">
+        android:foreground="@drawable/custom_bg">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="horizontal"
+            android:layout_gravity="center"
             android:weightSum="6">
 
             <ImageView
                 android:id="@+id/logo"
+                android:layout_marginLeft="15dp"
                 android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_weight="1"/>
+                android:layout_height="50dp"
+                android:layout_weight="2"
+                android:src="@drawable/zapplogo"/>
 
             <TextView
                 android:id="@+id/content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3.6"
-                android:gravity="center"
-                android:text="asds"
-                android:textSize="@dimen/penalty_list_item_fontsize" />
-
-            <ImageView
-                android:id="@+id/buttonEdit"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_weight="0.7"
-                android:src="@drawable/ic_mode_edit_white_48dp" />
-
-            <ImageView
-                android:id="@+id/buttonDelete"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="0dp"
-                android:layout_weight="0.7"
-                android:src="@drawable/ic_delete_white_48dp" />
+                android:layout_weight="4"
+                android:layout_marginLeft="25dp"
+                android:textSize="@dimen/penalty_list_item_fontsize"
+                android:text="asdasdasd"
+                android:layout_gravity="center_vertical" />
         </LinearLayout>
     </sn.zapp.util.ZappCardView>
 </LinearLayout>

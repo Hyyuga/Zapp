@@ -19,6 +19,7 @@ import sn.zapp.model.Member;
 import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.model.MemberResult;
 import sn.zapp.model.MemberScoreValue;
+import sn.zapp.util.Action;
 
 public class MatchdayTabFragment extends Fragment{
 
@@ -26,6 +27,7 @@ public class MatchdayTabFragment extends Fragment{
     private TabLayout tabLayout;
     private RealmList<MemberPenalyValue> penaltyResult = null;
     private RealmList<MemberScoreValue> resultScore = null;
+    private Action viewState = null;
 
 
     @Override
@@ -36,6 +38,8 @@ public class MatchdayTabFragment extends Fragment{
         setTabLayout((TabLayout) inflatedView.findViewById(R.id.tabLayout));
         getTabLayout().addTab(getTabLayout().newTab().setText("Penalty"));
         getTabLayout().addTab(getTabLayout().newTab().setText("Score"));
+
+
         final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
         final PagerAdapter adapter = new PagerAdapter
                 (getChildFragmentManager(), getTabLayout().getTabCount());
@@ -60,9 +64,10 @@ public class MatchdayTabFragment extends Fragment{
         return inflatedView;
     }
 
-    public static MatchdayTabFragment newInstance(int sectionNumber, Member member, String datum) {
+    public static MatchdayTabFragment newInstance(int sectionNumber, Member member, String datum, Action viewState) {
         MatchdayTabFragment fragment = new MatchdayTabFragment();
         fragment.setMember(member);
+        fragment.setViewState(viewState);
         Realm realm = Realm.getInstance(ZappApplication.getAppContext());
         Matchday results = realm.where(Matchday.class).equalTo("datum", datum).findFirst();
         if(results != null && results.getMemberResults() != null) {
@@ -110,6 +115,14 @@ public class MatchdayTabFragment extends Fragment{
         this.resultScore = resultScore;
     }
 
+    public Action getViewState() {
+        return viewState;
+    }
+
+    public void setViewState(Action viewState) {
+        this.viewState = viewState;
+    }
+
     public class PagerAdapter extends FragmentPagerAdapter {
         int mNumOfTabs;
 
@@ -123,10 +136,10 @@ public class MatchdayTabFragment extends Fragment{
 
             switch (position) {
                 case 0:
-                    TabPenalty tab1 = TabPenalty.newInstance(getMember(), getPenaltyResult());
+                    TabPenalty tab1 = TabPenalty.newInstance(getMember(), getPenaltyResult(), getViewState());
                     return tab1;
                 case 1:
-                    TabScore tab2 = TabScore.newInstance(getMember(),getResultScore());
+                    TabScore tab2 = TabScore.newInstance(getMember(),getResultScore(), getViewState());
                     return tab2;
                 default:
                     return null;

@@ -1,12 +1,7 @@
 package sn.zapp.penalty;
 
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import io.realm.RealmObject;
 import sn.zapp.R;
@@ -19,25 +14,6 @@ import sn.zapp.model.Penalty;
 public class PenaltyBaseDetailFragment extends BaseDetailFragment{
 
     private TextInputLayout name, amount;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initFields(null);
-                Penalty newPenalty = new Penalty(name.getEditText().getText().toString(), amount.getEditText().getText().toString());
-                realmDBManager.insertRealmObject(newPenalty);
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                boolean pop = manager.popBackStackImmediate();
-                baseListActivity.getFab().show();
-                baseListActivity.getToolbar().setTitle(getCreateTitle());
-            }
-        });
-        return view;
-    }
 
     @Override
     public void setSelectedListObject(RealmObject argListObject) {
@@ -80,5 +56,10 @@ public class PenaltyBaseDetailFragment extends BaseDetailFragment{
     @Override
     public String getActivityTitle() {
         return "Strafen";
+    }
+
+    @Override
+    public RealmObject createDBObject() {
+        return  new Penalty(name.getEditText().getText().toString(), amount.getEditText().getText().toString());
     }
 }

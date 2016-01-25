@@ -23,8 +23,4 @@ public class MemberBaseListViewAdapter extends BaseListViewAdapter {
         holder.mContentView.setText(member.getVorname() + " " + member.getNachname());
         super.onBindRealmViewHolder(holder, position);
     }
-    
-    @Override
-    protected void setBindHolderContentText() {
-    }
 }

@@ -54,22 +54,6 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
                 return false;
             }
         });
-//        holder.mButtonEdit.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (null != getmOnFragmentListener()) {
-//                    getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
-//                }
-//            }
-//        });
-//        holder.mButtonDelete.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.DELETE);
-//            }
-//        });
         holder.mLogo.setImageResource(R.mipmap.zapplogo);
     }
 
@@ -81,21 +65,15 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
         this.mOnFragmentListener = mOnFragmentListener;
     }
 
-    abstract protected void setBindHolderContentText();
-
     protected class ViewHolder extends RealmViewHolder {
         public final View mView;
         public final TextView mContentView;
-//        public final ImageView mButtonEdit;
-//        public final ImageView mButtonDelete;
         public final ImageView mLogo;
         public RealmObject mItem;
         public ViewHolder(LinearLayout view) {
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
-//            mButtonEdit = (ImageView) view.findViewById(R.id.buttonEdit);
-//            mButtonDelete = (ImageView) view.findViewById(R.id.buttonDelete);
             mLogo = (ImageView) view.findViewById(R.id.logo);
         }
         @Override

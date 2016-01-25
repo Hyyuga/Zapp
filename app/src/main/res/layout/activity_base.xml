@@ -27,15 +27,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/colorLightGrey"
         >
 
         <FrameLayout
             android:id="@+id/activity_fragment_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="12dp">
+            android:layout_height="match_parent">
         </FrameLayout>
 
     </RelativeLayout>
@@ -49,3 +47,6 @@
         android:src="@drawable/ic_add_circle_white_48dp" />
 
 </android.support.design.widget.CoordinatorLayout>
+    <!--android:layout_marginLeft="12dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_marginTop="12dp">-->

@@ -15,6 +15,7 @@ import sn.zapp.R;
 import sn.zapp.model.Member;
 import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.realm.ZappRealmDBManager;
+import sn.zapp.util.Action;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -27,6 +28,8 @@ public class TabPenalty extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mUiRecyclerView;
     private RealmList<MemberPenalyValue> penaltyResult = null;
+    private Action viewState = null;
+
     public TabPenalty() {
     }
 
@@ -34,10 +37,11 @@ public class TabPenalty extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabPenalty newInstance( Member member, RealmList<MemberPenalyValue> penaltyResult) {
+    public static TabPenalty newInstance( Member member, RealmList<MemberPenalyValue> penaltyResult, Action viewState) {
         TabPenalty fragment = new TabPenalty();
         fragment.setMember(member);
         fragment.setPenaltyResult(penaltyResult);
+        fragment.setViewState(viewState);
         return fragment;
     }
 
@@ -52,7 +56,7 @@ public class TabPenalty extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mUiRecyclerView.setLayoutManager(mLinearLayoutManager);
         mUiRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        HeaderAdapterPenalty adapterPenalty = new HeaderAdapterPenalty(realmDBManager.list_all_penalties(), getMember(), getPenaltyResult());
+        HeaderAdapterPenalty adapterPenalty = new HeaderAdapterPenalty(realmDBManager.list_all_penalties(), getMember(), getPenaltyResult(), viewState);
         mUiRecyclerView.setAdapter(adapterPenalty);
         return view;
     }
@@ -91,5 +95,12 @@ public class TabPenalty extends Fragment {
 
     public void setPenaltyResult(RealmList<MemberPenalyValue> penaltyResult) {
         this.penaltyResult = penaltyResult;
+    }
+    public Action getViewState() {
+        return viewState;
+    }
+
+    public void setViewState(Action viewState) {
+        this.viewState = viewState;
     }
 }

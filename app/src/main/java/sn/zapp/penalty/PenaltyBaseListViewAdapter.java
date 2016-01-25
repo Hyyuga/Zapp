@@ -23,8 +23,4 @@ public class PenaltyBaseListViewAdapter extends BaseListViewAdapter {
         holder.mContentView.setText(penalty.getName() + " ( " + penalty.getAmount() + " € )");
         super.onBindRealmViewHolder(holder, position);
     }
-
-    @Override
-    protected void setBindHolderContentText() {
-    }
 }

@@ -64,7 +64,7 @@ public abstract class BaseListFragment extends Fragment{
 
     @Override
     public void onDestroy() {
-        realmDBManager.close();
+        if (realmDBManager != null)realmDBManager.close();
         super.onDestroy();
     }
 

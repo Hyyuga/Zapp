@@ -4,6 +4,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import sn.zapp.ZappApplication;
+import sn.zapp.model.Championship;
 import sn.zapp.model.Matchday;
 import sn.zapp.model.Member;
 import sn.zapp.model.Penalty;
@@ -52,6 +53,12 @@ public class ZappRealmDBManager {
         realm.commitTransaction();
     }
 
+    public void deleteChampionship(Championship championship){
+        realm.beginTransaction();
+        realm.where(Score.class).equalTo("name", championship.getName()).findAll().clear();
+        realm.commitTransaction();
+    }
+
     public RealmResults<Member> list_all_members(){
         return realm.where(Member.class).findAll();
     }
@@ -71,5 +78,8 @@ public class ZappRealmDBManager {
 
     public RealmResults<Matchday> list_all_matchdays() {
         return realm.where(Matchday.class).findAll();
+    }
+    public RealmResults<Championship> list_all_championships() {
+        return realm.where(Championship.class).findAll();
     }
 }

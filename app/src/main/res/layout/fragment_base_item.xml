@@ -11,8 +11,7 @@
         android:layout_height="95dp"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/custom_bg"
-        android:weightSum="6">
+        android:foreground="@drawable/custom_bg">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -38,23 +37,6 @@
                 android:textSize="@dimen/penalty_list_item_fontsize"
                 android:text="asdasdasd"
                 android:layout_gravity="center_vertical" />
-
-            <!--<ImageView-->
-                <!--android:id="@+id/buttonEdit"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="24dp"-->
-                <!--android:layout_weight="0.7"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:src="@drawable/ic_mode_edit_white_48dp" />-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/buttonDelete"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="24dp"-->
-                <!--android:layout_marginLeft="0dp"-->
-                <!--android:layout_weight="0.7"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:src="@drawable/ic_delete_white_48dp" />-->
         </LinearLayout>
     </sn.zapp.util.ZappCardView>
 </LinearLayout>

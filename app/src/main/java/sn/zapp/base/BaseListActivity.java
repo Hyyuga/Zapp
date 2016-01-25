@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import io.realm.RealmObject;
 import sn.zapp.R;
@@ -15,7 +16,9 @@ import sn.zapp.util.Action;
 /**
  * Created by Steppo on 19.01.2016.
  */
-public abstract class BaseListActivity extends AppCompatActivity{
+public abstract class BaseListActivity extends AppCompatActivity implements BackHandledFragment.BackHandlerInterface{
+
+    private BackHandledFragment selectedFragment;
 
     protected Toolbar toolbar = null;
     protected FloatingActionButton fab = null;
@@ -61,6 +64,33 @@ public abstract class BaseListActivity extends AppCompatActivity{
     }
 
     @Override
+    public void setSelectedFragment(BackHandledFragment backHandledFragment) {
+        this.selectedFragment = backHandledFragment;
+    }
+    @Override
+    public void onBackPressed() {
+        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
+            // Selected fragment did not consume the back press event.
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = android.R.id.home;
+        int blas = item.getItemId();
+        switch (item.getItemId()){
+            case android.R.id.home: {
+                if(selectedFragment != null) {
+                    selectedFragment.onBackPressed();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean onNavigateUp() {
         realmDBManager.close();
         toolbar = null;
@@ -83,6 +113,8 @@ public abstract class BaseListActivity extends AppCompatActivity{
             @Override
             public void run() {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out,
+                        R.anim.slide_right_in, R.anim.slide_right_out);
                 fragmentTransaction.replace(R.id.activity_fragment_content, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

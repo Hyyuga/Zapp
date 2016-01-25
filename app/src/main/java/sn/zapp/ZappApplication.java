@@ -8,6 +8,7 @@ import android.content.Context;
  */
 public class ZappApplication extends Application{
     private static ZappApplication sInstance;
+    private static String viewState;
     private static String viewStatePenalty;
     private static String viewStateScore;
 
@@ -24,6 +25,13 @@ public class ZappApplication extends Application{
 
     public static String getViewStatePenalty(){
         return  sInstance.viewStatePenalty;
+    }
+    public static void setViewState(String arGviewState){
+        viewState = arGviewState;
+    }
+
+    public static String getViewState(){
+        return  sInstance.viewState;
     }
 
     public static void setViewStateScore(String arGviewState){

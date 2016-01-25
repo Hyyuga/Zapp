@@ -21,7 +21,6 @@ import sn.zapp.realm.ZappRealmDBManager;
 public abstract class BaseTabFragment extends Fragment {
 
     private RealmObject member;
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private ZappRealmDBManager realmDBManager = null;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mUiRecyclerView;

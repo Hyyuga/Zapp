@@ -12,6 +12,7 @@ public class MemberResult extends RealmObject {
 
     private RealmList<MemberPenalyValue> resultsPenalty;
     private RealmList<MemberScoreValue> resultsScore;
+    private RealmList<MemberChampionshipValue> resultsChampionship;
 
 
     public RealmList<MemberPenalyValue> getResultsPenalty() {
@@ -36,5 +37,13 @@ public class MemberResult extends RealmObject {
 
     public void setMember(String member) {
         this.member = member;
+    }
+
+    public RealmList<MemberChampionshipValue> getResultsChampionship() {
+        return resultsChampionship;
+    }
+
+    public void setResultsChampionship(RealmList<MemberChampionshipValue> resultsChampionship) {
+        this.resultsChampionship = resultsChampionship;
     }
 }

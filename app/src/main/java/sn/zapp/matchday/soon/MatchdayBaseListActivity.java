@@ -1,16 +1,16 @@
-package sn.zapp.matchday;
+package sn.zapp.matchday.soon;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import io.realm.RealmObject;
+import sn.zapp.R;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.base.BaseListFragment;
-import sn.zapp.member.MemberBaseDetailFragment;
-import sn.zapp.member.MemberBaseListFragment;
+import sn.zapp.matchday.MatchdayFragment;
 import sn.zapp.model.Matchday;
-import sn.zapp.model.Member;
 import sn.zapp.util.Action;
 
 /**
@@ -44,6 +44,23 @@ public class MatchdayBaseListActivity extends BaseListActivity implements BaseLi
     }
 
     @Override
+    protected void openListItemDetailView(RealmObject object, Action action) {
+        final MatchdayFragment fragment = new MatchdayFragment();
+        fragment.setMatchday((Matchday) object);
+        fragment.setViewState(action);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.activity_fragment_content, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                fab.hide();
+            }
+        }, 350);
+    }
+
+    @Override
     protected String getActivityTitle() {
         return "Ergebnisse";
     }
@@ -55,6 +72,6 @@ public class MatchdayBaseListActivity extends BaseListActivity implements BaseLi
 
     @Override
     protected BaseDetailFragment getBaseDetailFragment() {
-        return null;
+        return new MatchdayFragment();
     }
 }

@@ -14,12 +14,13 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
+import sn.zapp.base.BaseListFragment;
 import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 
 public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Matchday, MatchdaylistViewAdapter.ViewHolder> {
 
-    private MatchdayListFragment.OnListFragmentInteractionListener mOnFragmentListener = null;
+    private BaseListFragment.OnListFragmentInteractionListener mOnFragmentListener = null;
 
 
     public MatchdaylistViewAdapter(
@@ -34,9 +35,9 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
     @Override
     public MatchdaylistViewAdapter.ViewHolder onCreateRealmViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_matchday_item, parent, false);
+                .inflate(R.layout.fragment_base_item, parent, false);
 
-        return new ViewHolder((LinearLayout)view);
+        return new ViewHolder((LinearLayout) view);
     }
 
     @Override
@@ -49,44 +50,43 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked();
-                if (null != getmOnFragmentListener() &&  action == MotionEvent.ACTION_UP) {
+                if (null != getmOnFragmentListener() && action == MotionEvent.ACTION_UP) {
                     getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.SHOW);
                 }
                 return false;
             }
         });
-        holder.mButtonEdit.setOnClickListener(new View.OnClickListener() {
-
+        cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if (null != getmOnFragmentListener()) {
-                    getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
-                }
+            public boolean onLongClick(View v) {
+                getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
+                return false;
             }
         });
-        holder.mButtonDelete.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.DELETE);
-            }
-        });
+//        holder.mButtonEdit.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (null != getmOnFragmentListener()) {
+//                    getmOnFragmentListener().onListFragmentInteraction(holder.mItem, Action.EDIT);
+//                }
+//            }
+//        });
         holder.mLogo.setImageResource(R.mipmap.zapplogo);
     }
 
-    public MatchdayListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
+    public BaseListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
         return mOnFragmentListener;
     }
 
-    public void setOnFragmentListener(MatchdayListFragment.OnListFragmentInteractionListener mOnFragmentListener) {
-        this.mOnFragmentListener =  mOnFragmentListener;
+    public void setOnFragmentListener(BaseListFragment.OnListFragmentInteractionListener mOnFragmentListener) {
+        this.mOnFragmentListener = mOnFragmentListener;
     }
 
-    public static class ViewHolder extends RealmViewHolder{
+    public static class ViewHolder extends RealmViewHolder {
         public final View mView;
         public final TextView mContentView;
-        public final ImageView mButtonEdit;
-        public final ImageView mButtonDelete;
+//        public final ImageView mButtonEdit;
         public final ImageView mLogo;
         public Matchday mItem;
 
@@ -94,8 +94,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
-            mButtonEdit = (ImageView) view.findViewById(R.id.buttonEdit);
-            mButtonDelete = (ImageView) view.findViewById(R.id.buttonDelete);
+//            mButtonEdit = (ImageView) view.findViewById(R.id.buttonEdit);
             mLogo = (ImageView) view.findViewById(R.id.logo);
         }
 

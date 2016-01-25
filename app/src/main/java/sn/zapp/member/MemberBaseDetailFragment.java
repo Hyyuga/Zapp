@@ -5,11 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 
 import java.text.DateFormat;
@@ -33,37 +29,6 @@ public class MemberBaseDetailFragment extends BaseDetailFragment {
 
     private TextInputLayout vorname, nachname, email, address, date;
     private Date utilDate;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (getSelectedItem() == null) setSelectedItem(new Member());
-        Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
-        date = (TextInputLayout) view.findViewById(R.id.input_layout_date);
-        date.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    DialogFragment newFragment = new DatePickerFragment();
-                    newFragment.show(getChildFragmentManager(), "datePicker");
-                }
-            }
-        });
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initFields(null);
-                setSelectedListObject(new Member(vorname.getEditText().getText().toString(), nachname.getEditText().getText().toString(), date.getEditText().getText().toString(), email.getEditText().getText().toString(), address.getEditText().getText().toString()));
-                realmDBManager.insertRealmObject((Member) getSelectedItem());
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                boolean pop = manager.popBackStackImmediate();
-                baseListActivity.getFab().show();
-                baseListActivity.getToolbar().setTitle(getCreateTitle());
-            }
-        });
-        return view;
-    }
 
     @Override
     public void setSelectedListObject(RealmObject argListObject) {
@@ -142,6 +107,12 @@ public class MemberBaseDetailFragment extends BaseDetailFragment {
         return true;
     }
 
+
+    @Override
+    public String getTagText() {
+        return null;
+    }
+
     @Override
     public String getEditTitle() {
         return "Mitglied bearbeiten";
@@ -155,6 +126,11 @@ public class MemberBaseDetailFragment extends BaseDetailFragment {
     @Override
     public String getActivityTitle() {
         return "Mitglieder";
+    }
+
+    @Override
+    public RealmObject createDBObject() {
+        return new Member(vorname.getEditText().getText().toString(), nachname.getEditText().getText().toString(), date.getEditText().getText().toString(), email.getEditText().getText().toString(), address.getEditText().getText().toString());
     }
 }
 

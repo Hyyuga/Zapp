@@ -23,8 +23,4 @@ public class ScoreBaseListViewAdapter extends BaseListViewAdapter {
         holder.mContentView.setText(score.getName());
         super.onBindRealmViewHolder(holder, position);
     }
-
-    @Override
-    protected void setBindHolderContentText() {
-    }
 }

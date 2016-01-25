@@ -15,6 +15,7 @@ import sn.zapp.R;
 import sn.zapp.model.Member;
 import sn.zapp.model.MemberScoreValue;
 import sn.zapp.realm.ZappRealmDBManager;
+import sn.zapp.util.Action;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -27,6 +28,7 @@ public class TabScore extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mUiRecyclerView;
     private RealmList<MemberScoreValue> resultScore = null;
+    private Action viewState = null;
 
     public TabScore() {
     }
@@ -35,10 +37,11 @@ public class TabScore extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabScore newInstance(Member member, RealmList<MemberScoreValue> resultScore) {
+    public static TabScore newInstance(Member member, RealmList<MemberScoreValue> resultScore, Action viewState) {
         TabScore fragment = new TabScore();
         fragment.setMember(member);
         fragment.setResultScore(resultScore);
+        fragment.setViewState(viewState);
         return fragment;
     }
 
@@ -53,7 +56,7 @@ public class TabScore extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mUiRecyclerView.setLayoutManager(mLinearLayoutManager);
         mUiRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mUiRecyclerView.setAdapter(new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember(), getResultScore()));
+        mUiRecyclerView.setAdapter(new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember(), getResultScore(), viewState));
         return view;
     }
 
@@ -64,7 +67,7 @@ public class TabScore extends Fragment {
 
     @Override
     public void onDestroy() {
-        if(realmDBManager != null) realmDBManager.close();
+        if (realmDBManager != null) realmDBManager.close();
         super.onDestroy();
     }
 
@@ -91,5 +94,13 @@ public class TabScore extends Fragment {
 
     public void setResultScore(RealmList<MemberScoreValue> resultScore) {
         this.resultScore = resultScore;
+    }
+
+    public Action getViewState() {
+        return viewState;
+    }
+
+    public void setViewState(Action viewState) {
+        this.viewState = viewState;
     }
 }

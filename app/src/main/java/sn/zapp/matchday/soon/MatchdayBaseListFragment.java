@@ -1,4 +1,4 @@
-package sn.zapp.matchday;
+package sn.zapp.matchday.soon;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import io.realm.RealmResults;
 import sn.zapp.base.BaseListFragment;
+import sn.zapp.matchday.MatchdaylistViewAdapter;
 import sn.zapp.model.Matchday;
 
 /**
@@ -19,7 +20,7 @@ public class MatchdayBaseListFragment extends BaseListFragment {
 
         RealmResults<Matchday> list = realmDBManager.list_all_matchdays();
 
-        MatchdayBaseListViewAdapter adapter = new MatchdayBaseListViewAdapter(this.getActivity(), list, true, true);
+        MatchdaylistViewAdapter adapter = new MatchdaylistViewAdapter(this.getActivity(), list, true, true);
         adapter.setOnFragmentListener(mListener);
         mUiRecyclerView.setAdapter(adapter);
 

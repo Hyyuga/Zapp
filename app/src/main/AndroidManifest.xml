@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -74,6 +74,15 @@
                 android:value="sn.zapp.MainActivity" />
         </activity>
         <activity
+            android:name=".matchday.soon.MatchdayBaseListActivity"
+            android:label="@string/title_activity_matchday1"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sn.zapp.MainActivity" />
+        </activity>
+        <activity
             android:name=".member.MemberBaseListActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">
@@ -91,6 +100,14 @@
         </activity>
         <activity
             android:name=".score.ScoreBaseListActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sn.zapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".championship.ChampionshipBaseListActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">
             <meta-data
