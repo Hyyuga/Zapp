@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".matchday.MatchdayListActivity">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
         android:layout_height="match_parent"
         android:background="@color/colorLightGrey"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".matchday.MatchdayListActivity"
         tools:showIn="@layout/activity_matchday1">
 
         <FrameLayout

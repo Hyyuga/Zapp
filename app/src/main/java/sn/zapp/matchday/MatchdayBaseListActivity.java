@@ -1,4 +1,4 @@
-package sn.zapp.matchday.soon;
+package sn.zapp.matchday;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,7 +9,6 @@ import sn.zapp.R;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.base.BaseListFragment;
-import sn.zapp.matchday.MatchdayFragment;
 import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 

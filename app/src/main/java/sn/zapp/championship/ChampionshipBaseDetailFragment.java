@@ -12,6 +12,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import sn.zapp.R;
@@ -32,7 +33,7 @@ public class ChampionshipBaseDetailFragment extends BaseDetailFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        counter = 0;
+        counter = 1;
     }
 
     @Nullable
@@ -85,9 +86,6 @@ public class ChampionshipBaseDetailFragment extends BaseDetailFragment {
         rounds.add(layout);
         counter +=1;
     }
-//    private void removeView(View rootView, LayoutInflater inflater){
-//
-//    }
 
     @Override
     public void setSelectedListObject(RealmObject listObject) {

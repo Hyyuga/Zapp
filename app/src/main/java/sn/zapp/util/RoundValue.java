@@ -6,31 +6,33 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import de.greenrobot.event.EventBus;
 import sn.zapp.R;
 import sn.zapp.model.Round;
 
-public class RoundItem extends LinearLayout {
+public class RoundValue extends LinearLayout {
     private int id;
 
     private Round round;
 
     private String stringRound = "";
-    private String stringMultiplier = "";
+    private String stringResult = "";
     private String stringDescription = "";
 
     private EditText editTextRound;
-    private EditText editTextMultiplier;
+    private EditText editTextResult;
     private EditText editTextDescription;
 
-    public RoundItem(Context context, int id) {
+    private final EventBus bus = EventBus.getDefault();
+
+    public RoundValue(Context context, int id) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.fragment_round_item, this);
+        LayoutInflater.from(context).inflate(R.layout.fragment_round_value, this);
         initViews(context);
         if(id != -12){
             this.setId(id);
             this.setStringRound(String.valueOf(id));
         }
-
     }
     private void initViews(Context context) {
         LayoutInflater.from(context).inflate(R.layout.fragment_round_item, this);
@@ -38,8 +40,8 @@ public class RoundItem extends LinearLayout {
         setEditTextRound((EditText) this.findViewById(R.id.editText_number));
         getEditTextRound().setText(getStringRound());
 
-        setEditTextMultiplier((EditText) this.findViewById(R.id.editText_multiplier));
-        getEditTextMultiplier().setText(getStringMultiplier());
+        setEditTextResult((EditText) this.findViewById(R.id.editText_result));
+        getEditTextResult().setText(getStringResult());
 
         setEditTextDescription((EditText) this.findViewById(R.id.editText_description));
         getEditTextDescription().setText(getStringDescription());
@@ -49,21 +51,13 @@ public class RoundItem extends LinearLayout {
     }
 
     private void initListener() {
-        getEditTextDescription().setOnFocusChangeListener(new OnFocusChangeListener() {
+        getEditTextResult().setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
                     EditText text = (EditText) v;
-                    setStringDescription(text.getText().toString());
-                }
-            }
-        });
-        getEditTextMultiplier().setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    EditText text = (EditText) v;
-                    setStringMultiplier(text.getText().toString());
+                    setStringResult(text.getText().toString());
+//                    bus.post(new Re);
                 }
             }
         });
@@ -76,17 +70,17 @@ public class RoundItem extends LinearLayout {
     public void setStringRound(String stringRound) {
         this.stringRound = stringRound;
         if(this.editTextRound != null)
-            editTextRound.setText(stringRound);
+            editTextRound.setText("Runde " + stringRound);
     }
 
-    public String getStringMultiplier() {
-        return stringMultiplier;
+    public String getStringResult() {
+        return stringResult;
     }
 
-    public void setStringMultiplier(String stringMultiplier) {
-        this.stringMultiplier = stringMultiplier;
-        if(this.editTextMultiplier != null)
-            editTextMultiplier.setText(stringMultiplier);
+    public void setStringResult(String stringResult) {
+        this.stringResult = stringResult;
+        if(this.editTextResult != null)
+            editTextResult.setText(stringResult);
     }
 
     public String getStringDescription() {
@@ -107,12 +101,12 @@ public class RoundItem extends LinearLayout {
         this.editTextRound = editTextRound;
     }
 
-    public EditText getEditTextMultiplier() {
-        return editTextMultiplier;
+    public EditText getEditTextResult() {
+        return editTextResult;
     }
 
-    public void setEditTextMultiplier(EditText editTextMultiplier) {
-        this.editTextMultiplier = editTextMultiplier;
+    public void setEditTextResult(EditText editTextResult) {
+        this.editTextResult = editTextResult;
     }
 
     public EditText getEditTextDescription() {
@@ -139,7 +133,6 @@ public class RoundItem extends LinearLayout {
 
     public void setRound(Round round) {
         this.round = round;
-        setStringMultiplier(String.valueOf(round.getMultiplier()));
         setStringRound(String.valueOf(round.getRound()));
         setStringDescription(round.getDescription());
 

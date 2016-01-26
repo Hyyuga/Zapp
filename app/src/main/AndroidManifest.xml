@@ -65,16 +65,7 @@
                 android:value="sn.zapp.MainActivity" />
         </activity>
         <activity
-            android:name=".matchday.MatchdayListActivity"
-            android:label="@string/title_activity_matchday1"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="sn.zapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".matchday.soon.MatchdayBaseListActivity"
+            android:name=".matchday.MatchdayBaseListActivity"
             android:label="@string/title_activity_matchday1"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar">

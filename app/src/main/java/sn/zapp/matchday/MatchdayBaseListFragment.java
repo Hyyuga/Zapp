@@ -1,4 +1,4 @@
-package sn.zapp.matchday.soon;
+package sn.zapp.matchday;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import io.realm.RealmResults;
 import sn.zapp.base.BaseListFragment;
-import sn.zapp.matchday.MatchdaylistViewAdapter;
 import sn.zapp.model.Matchday;
 
 /**

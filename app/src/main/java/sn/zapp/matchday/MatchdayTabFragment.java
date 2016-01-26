@@ -16,6 +16,7 @@ import sn.zapp.R;
 import sn.zapp.ZappApplication;
 import sn.zapp.model.Matchday;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.model.MemberResult;
 import sn.zapp.model.MemberScoreValue;
@@ -27,6 +28,7 @@ public class MatchdayTabFragment extends Fragment{
     private TabLayout tabLayout;
     private RealmList<MemberPenalyValue> penaltyResult = null;
     private RealmList<MemberScoreValue> resultScore = null;
+    private RealmList<MemberChampionshipValue> resultShip = null;
     private Action viewState = null;
 
 
@@ -36,9 +38,9 @@ public class MatchdayTabFragment extends Fragment{
         View inflatedView = inflater.inflate(R.layout.fragment_matchday_tablayout, container, false);
 
         setTabLayout((TabLayout) inflatedView.findViewById(R.id.tabLayout));
-        getTabLayout().addTab(getTabLayout().newTab().setText("Penalty"));
-        getTabLayout().addTab(getTabLayout().newTab().setText("Score"));
-
+        getTabLayout().addTab(getTabLayout().newTab().setText("Strafen"));
+        getTabLayout().addTab(getTabLayout().newTab().setText("Erfolge"));
+        getTabLayout().addTab(getTabLayout().newTab().setText("Meisterschaft"));
 
         final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
         final PagerAdapter adapter = new PagerAdapter
@@ -75,6 +77,7 @@ public class MatchdayTabFragment extends Fragment{
                 if(memberResult.getMember().equals(member.getEmail())){
                     fragment.setPenaltyResult(memberResult.getResultsPenalty());
                     fragment.setResultScore(memberResult.getResultsScore());
+                    fragment.setResultShip(memberResult.getResultsChampionship());
                 }
             }
         }
@@ -123,6 +126,14 @@ public class MatchdayTabFragment extends Fragment{
         this.viewState = viewState;
     }
 
+    public RealmList<MemberChampionshipValue> getResultShip() {
+        return resultShip;
+    }
+
+    public void setResultShip(RealmList<MemberChampionshipValue> resultShip) {
+        this.resultShip = resultShip;
+    }
+
     public class PagerAdapter extends FragmentPagerAdapter {
         int mNumOfTabs;
 
@@ -141,6 +152,9 @@ public class MatchdayTabFragment extends Fragment{
                 case 1:
                     TabScore tab2 = TabScore.newInstance(getMember(),getResultScore(), getViewState());
                     return tab2;
+                case 2:
+                    TabChampionship tab3 = TabChampionship.newInstance(getMember(),getResultShip(), getViewState());
+                    return tab3;
                 default:
                     return null;
             }

@@ -18,7 +18,7 @@ import android.view.View;
 
 import sn.zapp.championship.ChampionshipBaseListActivity;
 import sn.zapp.location.LocationActivity;
-import sn.zapp.matchday.soon.MatchdayBaseListActivity;
+import sn.zapp.matchday.MatchdayBaseListActivity;
 import sn.zapp.member.MemberBaseListActivity;
 import sn.zapp.penalty.PenaltyBaseListActivity;
 import sn.zapp.score.ScoreBaseListActivity;
