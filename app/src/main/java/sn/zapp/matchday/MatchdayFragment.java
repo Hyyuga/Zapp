@@ -30,13 +30,18 @@ import sn.zapp.ZappApplication;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.event.PenaltyEvent;
+import sn.zapp.event.RoundValueEvent;
 import sn.zapp.event.ScoreEvent;
+import sn.zapp.model.Championship;
+import sn.zapp.model.ChampionshipRoundValue;
 import sn.zapp.model.Matchday;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.model.MemberPenalyValue;
 import sn.zapp.model.MemberResult;
 import sn.zapp.model.MemberScoreValue;
 import sn.zapp.model.Penalty;
+import sn.zapp.model.Round;
 import sn.zapp.model.Score;
 import sn.zapp.realm.ZappRealmDBManager;
 import sn.zapp.util.Action;
@@ -93,9 +98,10 @@ public class MatchdayFragment extends BaseDetailFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return memberlist.get(position).getVorname() + " " + memberlist.get(position).getNachname();
+            return memberlist.get(position).getFirstName() + " " + memberlist.get(position).getLastName();
         }
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,6 +177,96 @@ public class MatchdayFragment extends BaseDetailFragment {
         updateMemberScoreResult(event.getMember(), event.getScore(), event.getAction());
     }
 
+    public void onEvent(RoundValueEvent event) {
+        updateMemberChampionshipResult(event.getMemberEmail(), event.getChampionship(), event.getValue(), event.getRound());
+    }
+
+
+    private void updateMemberChampionshipResult(String memberEmail, String championshipName, String value, Round round) {
+        Member member = realmDBManager.findMember(memberEmail);
+        Championship championship = realmDBManager.findChampionship(championshipName);
+
+        if (viewState.equals(Action.EDIT))
+            Realm.getInstance(ZappApplication.getAppContext()).beginTransaction();
+
+        RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
+        BigDecimal resultChampionshipValue = null;
+        if (memberResultList == null)
+            getMatchday().setMemberResults(new RealmList<MemberResult>());
+
+        MemberResult result = null;
+        for (MemberResult mResult : getMatchday().getMemberResults()) {
+            if (mResult.getMember().equals(member.getEmail())) {
+                result = mResult;
+                break;
+            }
+        }
+
+        if (result == null || (result != null && result.getResultsChampionship() == null)) {
+            boolean addShip = result == null;
+            resultChampionshipValue = new BigDecimal(value);
+            if (result == null) result = new MemberResult();
+            MemberChampionshipValue resultShip = new MemberChampionshipValue();
+            resultShip.setRoundResult(new RealmList<ChampionshipRoundValue>());
+            resultShip.setChampionship(championship);
+            resultShip.setValue(resultChampionshipValue);
+            ChampionshipRoundValue roundValue = new ChampionshipRoundValue();
+            roundValue.setRound(round);
+            roundValue.setValue(resultChampionshipValue);
+            resultShip.getRoundResult().add(roundValue);
+            result.setResultsChampionship(new RealmList<MemberChampionshipValue>());
+            result.getResultsChampionship().add(resultShip);
+            result.setMember(member.getEmail());
+            if (addShip) getMatchday().getMemberResults().add(result);
+        } else {
+            MemberChampionshipValue resultShip = null;
+            for (MemberChampionshipValue shipValue : result.getResultsChampionship()) {
+                if (shipValue.getChampionship().equals(championship)) {
+                    resultShip = shipValue;
+                    ChampionshipRoundValue resultRound = null;
+                    for (ChampionshipRoundValue roundValue : shipValue.getRoundResult()) {
+                        if (roundValue.getRound().equals(round)) {
+                            resultRound = roundValue;
+                            roundValue.setDbValue(value);
+                            break;
+                        }
+                    }
+                    if (resultRound == null) {
+                        ChampionshipRoundValue newValue = new ChampionshipRoundValue();
+                        newValue.setRound(round);
+                        newValue.setDbValue(value);
+                        shipValue.getRoundResult().add(newValue);
+                    }
+                    break;
+                }
+            }
+            if (resultShip == null) {
+                MemberChampionshipValue newValue = new MemberChampionshipValue();
+                newValue.setChampionship(championship);
+                newValue.setDbValue(value);
+                newValue.setRoundResult(new RealmList<ChampionshipRoundValue>());
+                ChampionshipRoundValue newRoundValue = new ChampionshipRoundValue();
+                newRoundValue.setRound(round);
+                newRoundValue.setDbValue(value);
+                newValue.getRoundResult().add(newRoundValue);
+                result.getResultsChampionship().add(newValue);
+            }
+        }
+
+
+        for (MemberChampionshipValue shipValue : result.getResultsChampionship()) {
+            BigDecimal champValue = new BigDecimal(0);
+            for (ChampionshipRoundValue roundValue : shipValue.getRoundResult()) {
+                champValue = champValue.add(roundValue.getValue());
+            }
+            shipValue.setValue(champValue);
+        }
+
+
+        if (viewState.equals(Action.EDIT))
+            Realm.getInstance(ZappApplication.getAppContext()).commitTransaction();
+    }
+
     private void updateMemberPenaltyResult(Member member, Penalty penalty, Action action) {
         if (viewState.equals(Action.EDIT))
             Realm.getInstance(ZappApplication.getAppContext()).beginTransaction();
@@ -209,12 +305,14 @@ public class MatchdayFragment extends BaseDetailFragment {
             }
 
             if (resultPenalty == null) {
-                if (resultPenaltyValue == null) resultPenaltyValue = action.equals(Action.ADD)? new BigDecimal(1) : new BigDecimal(-1);
+                if (resultPenaltyValue == null)
+                    resultPenaltyValue = action.equals(Action.ADD) ? new BigDecimal(1) : new BigDecimal(-1);
                 resultPenalty = new MemberPenalyValue();
                 resultPenalty.setPenalty(penalty);
                 resultPenalty.setValue(resultPenaltyValue);
                 result.getResultsPenalty().add(resultPenalty);
-            } else resultPenalty.setValue(action.equals(Action.ADD) ? resultPenalty.getValue().add(new BigDecimal(1)) : resultPenalty.getValue().add(new BigDecimal(-1)));
+            } else
+                resultPenalty.setValue(action.equals(Action.ADD) ? resultPenalty.getValue().add(new BigDecimal(1)) : resultPenalty.getValue().add(new BigDecimal(-1)));
 
         }
         if (viewState.equals(Action.EDIT))
@@ -313,6 +411,7 @@ public class MatchdayFragment extends BaseDetailFragment {
             baseListActivity = (BaseListActivity) context;
         }
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

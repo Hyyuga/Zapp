@@ -29,8 +29,14 @@ public class TabScore extends Fragment {
     private RecyclerView mUiRecyclerView;
     private RealmList<MemberScoreValue> resultScore = null;
     private Action viewState = null;
+    HeaderAdapterScore adapterScore = null;
 
     public TabScore() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     /**
@@ -56,7 +62,8 @@ public class TabScore extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mUiRecyclerView.setLayoutManager(mLinearLayoutManager);
         mUiRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mUiRecyclerView.setAdapter(new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember(), getResultScore(), viewState));
+        adapterScore = new HeaderAdapterScore(realmDBManager.list_all_scores(), getMember(), getResultScore(), viewState);
+        mUiRecyclerView.setAdapter(adapterScore);
         return view;
     }
 

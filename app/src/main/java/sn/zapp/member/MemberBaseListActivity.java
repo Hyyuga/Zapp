@@ -52,6 +52,6 @@ public class MemberBaseListActivity extends BaseListActivity implements BaseList
 
     @Override
     protected BaseDetailFragment getBaseDetailFragment() {
-        return new MemberBaseDetailFragment();
+        return new MemberBaseDetailFragmentADB();
     }
 }

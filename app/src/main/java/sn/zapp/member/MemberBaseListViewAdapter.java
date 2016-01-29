@@ -20,7 +20,7 @@ public class MemberBaseListViewAdapter extends BaseListViewAdapter {
         final RealmObject object = realmResults.get(position);
         Member member = (Member) object;
         holder.mItem = member;
-        holder.mContentView.setText(member.getVorname() + " " + member.getNachname());
+        holder.mContentView.setText(member.getFirstName() + " " + member.getLastName());
         super.onBindRealmViewHolder(holder, position);
     }
 }

@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import de.greenrobot.event.EventBus;
 import io.realm.RealmObject;
 import sn.zapp.R;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
 import sn.zapp.base.BaseListFragment;
+import sn.zapp.event.MatchdayEvent;
 import sn.zapp.model.Matchday;
 import sn.zapp.util.Action;
 
@@ -47,6 +49,7 @@ public class MatchdayBaseListActivity extends BaseListActivity implements BaseLi
         final MatchdayFragment fragment = new MatchdayFragment();
         fragment.setMatchday((Matchday) object);
         fragment.setViewState(action);
+        EventBus.getDefault().post(new MatchdayEvent((Matchday) object));
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

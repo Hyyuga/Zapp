@@ -9,12 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import sn.zapp.R;
+import sn.zapp.event.SaveEvent;
 import sn.zapp.model.Championship;
+import sn.zapp.model.ChampionshipRoundValue;
 import sn.zapp.model.Member;
 import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.model.Round;
@@ -34,6 +39,7 @@ public class TabChampionship extends Fragment {
     private TextInputLayout header;
     protected LinearLayout childRootLayout = null;
     private List<RoundValue> roundValues = null;
+    private final EventBus bus = EventBus.getDefault();
 
     public TabChampionship() {
     }
@@ -42,8 +48,8 @@ public class TabChampionship extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realmDBManager = new ZappRealmDBManager();
-//        EventBus.getDefault().register(this);
         roundValues =  new ArrayList<>();
+        bus.register(this);
     }
 
     /**
@@ -61,32 +67,54 @@ public class TabChampionship extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_championship, container, false);
-        header = (TextInputLayout) view.findViewById(R.id.input_layout_header);
-        childRootLayout = (LinearLayout) view.findViewById(R.id.layout_child);
-        initFields();
-        return view;
+        View tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
+
+        childRootLayout = (LinearLayout) tabChampionship.findViewById(R.id.layout_child);
+        initFields(inflater, container);
+        return tabChampionship;
     }
-//
-//    public void onEvent(SaveEvent saveEvent){
-//        for (RoundValue roundValue: roundValues) {
-//            roundValue.getEditTextDescription().clearFocus();
-//            roundValue.getEditTextRound().clearFocus();
-//            roundValue.getEditTextResult().clearFocus();
-//        }
-//    }
-
-
-    public void initFields() {
-        for (Championship value: realmDBManager.list_all_championships()) {
-            header.getEditText().setText(value.getName());
-            for (Round round : value.getRounds()) {
-                RoundValue roundValue = new RoundValue(getContext(), -12);
-                roundValue.setRound(round);
-                childRootLayout.addView(roundValue);
-                roundValues.add(roundValue);
-            }
+    //
+    public void onEvent(SaveEvent saveEvent){
+        for (RoundValue roundValue: roundValues) {
+            roundValue.getEditTextDescription().clearFocus();
+            roundValue.getEditTextRound().clearFocus();
+            roundValue.getEditTextResult().clearFocus();
         }
+    }
+
+
+    public void initFields(LayoutInflater inflater, ViewGroup container) {
+        RealmResults list = realmDBManager.list_all_championships();
+        for (Championship value: realmDBManager.list_all_championships()) {
+            View roundValueMaster = inflater.inflate(R.layout.tab_championship_round_value_master, container, false);
+            LinearLayout roundValueMasterChild = (LinearLayout) roundValueMaster.findViewById(R.id.layout_child);
+            header = (TextInputLayout) roundValueMaster.findViewById(R.id.input_layout_header);
+            header.getEditText().setText(value.getName());
+
+            for (Round round : value.getRounds()) {
+                RoundValue roundValue = new RoundValue(getContext(), value.getName(), member.getEmail());
+                roundValue.setRound(round);
+                roundValueMasterChild.addView(roundValue);
+                roundValues.add(roundValue);
+                if(getResultChampionship() != null){
+                    for (MemberChampionshipValue valueResult : getResultChampionship()) {
+                        if(value.getName().equals(valueResult.getChampionship().getName())){
+                            header.getEditText().setText(value.getName() + ": " + valueResult.getDbValue());
+                            if(valueResult.getRoundResult() != null){
+                                for(ChampionshipRoundValue roundResultValue : valueResult.getRoundResult()){
+                                    if(roundResultValue.getRound().getRoundnumber() == round.getRoundnumber()){
+                                        BigDecimal result = roundResultValue.getValue().divide(new BigDecimal(roundResultValue.getRound().getMultiplier()));
+                                        roundValue.setStringResult(result.toString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            childRootLayout.addView(roundValueMaster);
+        }
+
 
     }
 

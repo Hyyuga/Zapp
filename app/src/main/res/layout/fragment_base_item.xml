@@ -20,13 +20,13 @@
             android:layout_gravity="center"
             android:weightSum="6">
 
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_marginLeft="15dp"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="2"
-                android:src="@drawable/zapplogo"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/logo"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:src="@drawable/zapplogo"/>-->
 
             <TextView
                 android:id="@+id/content"

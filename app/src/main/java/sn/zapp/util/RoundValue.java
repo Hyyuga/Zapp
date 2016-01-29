@@ -6,8 +6,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.math.BigDecimal;
+
 import de.greenrobot.event.EventBus;
 import sn.zapp.R;
+import sn.zapp.event.RoundValueEvent;
 import sn.zapp.model.Round;
 
 public class RoundValue extends LinearLayout {
@@ -23,19 +26,20 @@ public class RoundValue extends LinearLayout {
     private EditText editTextResult;
     private EditText editTextDescription;
 
+    private final String championshipName;
+    private final String memberEmail;
+
     private final EventBus bus = EventBus.getDefault();
 
-    public RoundValue(Context context, int id) {
+    public RoundValue(Context context, String name, String memberEmail) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.fragment_round_value, this);
+        LayoutInflater.from(context).inflate(R.layout.tab_championship_round_value, this);
         initViews(context);
-        if(id != -12){
-            this.setId(id);
-            this.setStringRound(String.valueOf(id));
-        }
+        this.championshipName = name;
+        this.memberEmail = memberEmail;
     }
     private void initViews(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.fragment_round_item, this);
+        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
 
         setEditTextRound((EditText) this.findViewById(R.id.editText_number));
         getEditTextRound().setText(getStringRound());
@@ -57,7 +61,14 @@ public class RoundValue extends LinearLayout {
                 if(!hasFocus){
                     EditText text = (EditText) v;
                     setStringResult(text.getText().toString());
-//                    bus.post(new Re);
+                    RoundValueEvent event = new RoundValueEvent();
+                    BigDecimal value = new BigDecimal(getStringResult());
+                    BigDecimal multiplier = new BigDecimal(round.getMultiplier());
+                    event.setRound(round);
+                    event.setValue(value.multiply(multiplier).toString());
+                    event.setChampionship(championshipName);
+                    event.setMemberEmail(memberEmail);
+                    bus.post(event);
                 }
             }
         });
@@ -133,8 +144,7 @@ public class RoundValue extends LinearLayout {
 
     public void setRound(Round round) {
         this.round = round;
-        setStringRound(String.valueOf(round.getRound()));
+        setStringRound(String.valueOf(round.getRoundnumber()));
         setStringDescription(round.getDescription());
-
     }
 }

@@ -77,6 +77,21 @@ public class TabPenalty extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     /**
      * The fragment argument representing the section number for this
      * fragment.

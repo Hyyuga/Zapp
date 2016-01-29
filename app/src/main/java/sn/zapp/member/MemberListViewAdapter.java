@@ -39,9 +39,9 @@ public class MemberListViewAdapter extends RealmBasedRecyclerViewAdapter<Member,
     public void onBindRealmViewHolder(final ViewHolder holder, final int position) {
         final Member member = realmResults.get(position);
         holder.mItem = member;
-        holder.mTextViewName.setText(member.getVorname() + " " + member.getNachname());
+        holder.mTextViewName.setText(member.getFirstName() + " " + member.getLastName());
         holder.mTextViewEmail.setText(member.getEmail());
-        holder.mTextViewBirthday.setText(member.getGeburtstag());
+        holder.mTextViewBirthday.setText(member.getBirthday());
         holder.mImageViewPerson.setImageResource(R.mipmap.zapplogo);
         CardView cardView = (CardView) holder.mView.findViewById(R.id.card_view);
         cardView.setOnTouchListener(new View.OnTouchListener() {

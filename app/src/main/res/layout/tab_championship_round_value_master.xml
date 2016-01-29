@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
@@ -41,34 +40,6 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/layout_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="20dp">
-
-            <Button
-                android:id="@+id/buttonSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit" />
-
-            <Button
-                android:id="@+id/buttonAbbrechen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Abort" />
-
-            <Button
-                android:id="@+id/buttonAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

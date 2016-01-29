@@ -12,7 +12,6 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import sn.zapp.R;
@@ -148,7 +147,7 @@ public class ChampionshipBaseDetailFragment extends BaseDetailFragment {
             String description = round.getStringDescription();
             domRound.setDescription(description);
             domRound.setMultiplier(Integer.parseInt(multiplier));
-            domRound.setRound(Integer.parseInt(number));
+            domRound.setRoundnumber(Integer.parseInt(number));
             champ.getRounds().add(domRound);
         }
         return champ;

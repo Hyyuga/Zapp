@@ -67,7 +67,7 @@ public class HeaderAdapterPenalty extends RecyclerView.Adapter<RecyclerView.View
                                     events.setAction(Action.ADD);
                                     EventBus.getDefault().post(events);
                                 }
-                            }, 350);
+                            }, 200);
 
                         }
                         return false;

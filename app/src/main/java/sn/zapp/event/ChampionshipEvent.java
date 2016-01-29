@@ -1,7 +1,7 @@
 package sn.zapp.event;
 
-import sn.zapp.model.Championship;
 import sn.zapp.model.Member;
+import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.util.Action;
 
 /**
@@ -9,7 +9,7 @@ import sn.zapp.util.Action;
  */
 public class ChampionshipEvent {
     private Member member;
-    private Championship championship;
+    private MemberChampionshipValue memberChampionshipValue;
     private Action action;
 
     public Member getMember() {
@@ -20,12 +20,12 @@ public class ChampionshipEvent {
         this.member = member;
     }
 
-    public Championship getChampionship() {
-        return championship;
+    public MemberChampionshipValue getMemberChampionshipValue() {
+        return memberChampionshipValue;
     }
 
-    public void setChampionship(Championship penalty) {
-        this.championship = penalty;
+    public void setMemberChampionshipValue(MemberChampionshipValue penalty) {
+        this.memberChampionshipValue = penalty;
     }
 
     public Action getAction() {

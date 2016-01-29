@@ -72,7 +72,7 @@ public class MatchdaylistViewAdapter extends RealmBasedRecyclerViewAdapter<Match
 //                }
 //            }
 //        });
-        holder.mLogo.setImageResource(R.mipmap.zapplogo);
+//        holder.mLogo.setImageResource(R.mipmap.zapplogo);
     }
 
     public BaseListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {

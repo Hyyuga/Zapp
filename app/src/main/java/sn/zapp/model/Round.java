@@ -1,23 +1,21 @@
 package sn.zapp.model;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Steppo on 22.01.2016.
  */
 public class Round extends RealmObject {
-    @PrimaryKey
-    private int round;
+    private int roundnumber;
     private int multiplier;
     private String description;
 
-    public int getRound() {
-        return round;
+    public int getRoundnumber() {
+        return roundnumber;
     }
 
-    public void setRound(int round) {
-        this.round = round;
+    public void setRoundnumber(int roundnumber) {
+        this.roundnumber = roundnumber;
     }
 
     public int getMultiplier() {

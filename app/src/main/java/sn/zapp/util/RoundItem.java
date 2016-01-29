@@ -24,7 +24,7 @@ public class RoundItem extends LinearLayout {
 
     public RoundItem(Context context, int id) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.fragment_round_item, this);
+        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
         initViews(context);
         if(id != -12){
             this.setId(id);
@@ -33,7 +33,7 @@ public class RoundItem extends LinearLayout {
 
     }
     private void initViews(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.fragment_round_item, this);
+        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
 
         setEditTextRound((EditText) this.findViewById(R.id.editText_number));
         getEditTextRound().setText(getStringRound());
@@ -140,7 +140,7 @@ public class RoundItem extends LinearLayout {
     public void setRound(Round round) {
         this.round = round;
         setStringMultiplier(String.valueOf(round.getMultiplier()));
-        setStringRound(String.valueOf(round.getRound()));
+        setStringRound(String.valueOf(round.getRoundnumber()));
         setStringDescription(round.getDescription());
 
     }

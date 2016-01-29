@@ -25,6 +25,7 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import sn.zapp.R;
 import sn.zapp.event.PenaltyEvent;
+import sn.zapp.event.SaveEvent;
 import sn.zapp.event.ScoreEvent;
 import sn.zapp.model.Matchday;
 import sn.zapp.model.Member;
@@ -55,7 +56,6 @@ public class MatchdayActivity extends AppCompatActivity {
     private ZappRealmDBManager realmDBManager = null;
     //    private List<Member> memberList;
 //    private HashMap<Member, Matchday> hashMapMemberMatchday;
-    private EventBus bus = EventBus.getDefault();
     private Matchday matchday = null;
 
     @Override
@@ -98,11 +98,12 @@ public class MatchdayActivity extends AppCompatActivity {
         String date = df.format(Calendar.getInstance().getTime());
         getMatchday().setDatum(date);
 
-        bus.register(this);
+        EventBus.getDefault().register(this);
     }
 
     private void createMatchday() {
         realmDBManager.insertRealmObject(getMatchday());
+        EventBus.getDefault().post(new SaveEvent());
     }
 
     public void onEvent(PenaltyEvent event) {
@@ -130,14 +131,14 @@ public class MatchdayActivity extends AppCompatActivity {
         if (result == null || (result != null && result.getResultsPenalty() == null)) {
             boolean addPenalty = result == null;
             resultPenaltyValue = new BigDecimal(2);
-            if(result == null) result = new MemberResult();
+            if (result == null) result = new MemberResult();
             MemberPenalyValue resultPenalty = new MemberPenalyValue();
             resultPenalty.setPenalty(penalty);
             resultPenalty.setValue(resultPenaltyValue);
             result.setResultsPenalty(new RealmList<MemberPenalyValue>());
             result.getResultsPenalty().add(resultPenalty);
             result.setMember(member.getEmail());
-            if(addPenalty) getMatchday().getMemberResults().add(result);
+            if (addPenalty) getMatchday().getMemberResults().add(result);
         } else {
             MemberPenalyValue resultPenalty = null;
             for (MemberPenalyValue value : result.getResultsPenalty()) {
@@ -174,14 +175,14 @@ public class MatchdayActivity extends AppCompatActivity {
         if (result == null || (result != null && result.getResultsScore() == null)) {
             boolean addResult = result == null;
             resultScoreValue = new BigDecimal(1);
-            if(result == null) result =  new MemberResult();
+            if (result == null) result = new MemberResult();
             MemberScoreValue resultScore = new MemberScoreValue();
             resultScore.setScore(score);
             resultScore.setValue(resultScoreValue);
             result.setResultsScore(new RealmList<MemberScoreValue>());
             result.getResultsScore().add(resultScore);
             result.setMember(member.getEmail());
-            if(addResult) getMatchday().getMemberResults().add(result);
+            if (addResult) getMatchday().getMemberResults().add(result);
         } else {
             MemberScoreValue resultScore = null;
             for (MemberScoreValue value : result.getResultsScore()) {
@@ -234,6 +235,7 @@ public class MatchdayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         realmDBManager.close();
+        if(EventBus.getDefault().isRegistered(this))EventBus.getDefault().unregister(this);
         Runtime.getRuntime().gc();
         super.onDestroy();
     }
@@ -277,7 +279,7 @@ public class MatchdayActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return memberlist.get(position).getVorname() + " " + memberlist.get(position).getNachname();
+            return memberlist.get(position).getFirstName() + " " + memberlist.get(position).getLastName();
         }
     }
 }

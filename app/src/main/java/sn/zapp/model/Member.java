@@ -9,66 +9,66 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Member extends RealmObject{
 
-    private String vorname;
-    private String nachname;
-    private String adresse;
+    private String firstName;
+    private String lastName;
+    private String address;
     private String imageurl;
     @PrimaryKey
     private String email;
-    private String geburtstag;
+    private String birthday;
 
     public Member() {
     }
 
-    public Member(String vorname, String nachname, String geburtstag, String email, String adresse) {
-        this.vorname = vorname;
-        this.setGeburtstag(geburtstag);
-        this.nachname = nachname;
-        this.adresse = adresse;
+    public Member(String firstName, String lastName, String birthday, String email, String address) {
+        this.firstName = firstName;
+        this.setBirthday(birthday);
+        this.lastName = lastName;
+        this.address = address;
         this.setEmail(email);
     }
 //    }
 
     /**
-     * @return the vorname
+     * @return the firstName
      */
-    public String getVorname() {
-        return vorname;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * @param vorname the vorname to set
+     * @param firstName the firstName to set
      */
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
-     * @return the nachname
+     * @return the lastName
      */
-    public String getNachname() {
-        return nachname;
+    public String getLastName() {
+        return lastName;
     }
 
     /**
-     * @param nachname the nachname to set
+     * @param lastName the lastName to set
      */
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**
-     * @return the adresse
+     * @return the address
      */
-    public String getAdresse() {
-        return adresse;
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * @param adresse the adresse to set
+     * @param address the address to set
      */
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     /**
@@ -93,11 +93,11 @@ public class Member extends RealmObject{
         this.email = email;
     }
 
-    public String getGeburtstag() {
-        return geburtstag;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setGeburtstag(String geburtstag) {
-        this.geburtstag = geburtstag;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

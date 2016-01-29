@@ -25,6 +25,7 @@ public abstract class BaseDetailFragment extends BackHandledFragment {
     protected RealmObject selectedItem = null;
     protected LinearLayout childRootLayout = null;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,16 +54,19 @@ public abstract class BaseDetailFragment extends BackHandledFragment {
                 initFields(null);
                 RealmObject persistObject = createDBObject();
                 realmDBManager.insertRealmObject(persistObject);
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                boolean pop = manager.popBackStackImmediate();
-                baseListActivity.getFab().show();
-                baseListActivity.getToolbar().setTitle(getCreateTitle());
-                baseListActivity.setSelectedFragment(null);
+               onBack();
             }
         });
 
         return view;
 
+    }
+
+    public void onSubmit(View view) {
+        initFields(null);
+        RealmObject persistObject = createDBObject();
+        realmDBManager.insertRealmObject(persistObject);
+        onBack();
     }
 
     @Override
@@ -95,7 +99,7 @@ public abstract class BaseDetailFragment extends BackHandledFragment {
 
     @Override
     public void onDestroy() {
-        if(realmDBManager != null) realmDBManager.close();
+        if (realmDBManager != null) realmDBManager.close();
         super.onDestroy();
     }
 

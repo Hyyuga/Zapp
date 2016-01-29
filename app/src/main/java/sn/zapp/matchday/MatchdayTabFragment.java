@@ -147,10 +147,10 @@ public class MatchdayTabFragment extends Fragment{
 
             switch (position) {
                 case 0:
-                    TabPenalty tab1 = TabPenalty.newInstance(getMember(), getPenaltyResult(), getViewState());
+                    TabPenaltyNew tab1 = TabPenaltyNew.newInstance(getMember(), getPenaltyResult(), getViewState());
                     return tab1;
                 case 1:
-                    TabScore tab2 = TabScore.newInstance(getMember(),getResultScore(), getViewState());
+                    TabScoreNew tab2 = TabScoreNew.newInstance(getMember(),getResultScore(), getViewState());
                     return tab2;
                 case 2:
                     TabChampionship tab3 = TabChampionship.newInstance(getMember(),getResultShip(), getViewState());
