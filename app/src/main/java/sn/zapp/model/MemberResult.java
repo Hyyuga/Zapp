@@ -14,6 +14,9 @@ public class MemberResult extends RealmObject {
     private RealmList<MemberScoreValue> resultsScore;
     private RealmList<MemberChampionshipValue> resultsChampionship;
 
+    private boolean attended;
+    private boolean paid;
+
 
     public RealmList<MemberPenalyValue> getResultsPenalty() {
         return resultsPenalty;
@@ -45,5 +48,21 @@ public class MemberResult extends RealmObject {
 
     public void setResultsChampionship(RealmList<MemberChampionshipValue> resultsChampionship) {
         this.resultsChampionship = resultsChampionship;
+    }
+
+    public boolean isAttended() {
+        return attended;
+    }
+
+    public void setAttended(boolean attended) {
+        this.attended = attended;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class TabScoreNew extends Fragment {
     protected LinearLayout childRootLayout = null;
     private final EventBus bus = EventBus.getDefault();
     private List<ScoreValue> penalties;
+    View tabScore = null;
 
     public TabScoreNew() {
     }
@@ -63,11 +63,11 @@ public class TabScoreNew extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
+         tabScore = inflater.inflate(R.layout.tab_score_master, container, false);
 
-        childRootLayout = (LinearLayout) tabChampionship.findViewById(R.id.layout_child);
+        childRootLayout = (LinearLayout) tabScore.findViewById(R.id.layout_child);
         initFields(inflater, container);
-        return tabChampionship;
+        return tabScore;
     }
 
     //
@@ -77,23 +77,22 @@ public class TabScoreNew extends Fragment {
 
     public void initFields(LayoutInflater inflater, ViewGroup container) {
 
-        View roundValueMaster = inflater.inflate(R.layout.tab_penalty_new, container, false);
-        LinearLayout roundValueMasterChild = (LinearLayout) roundValueMaster.findViewById(R.id.layout_child);
+        LinearLayout roundValueMasterChild = (LinearLayout) tabScore.findViewById(R.id.layout_child);
         for (Score value : realmDBManager.list_all_scores()) {
-            ScoreValue penaltyValue = new ScoreValue(getContext(), member);
-            penaltyValue.setScore(value);
+            ScoreValue scoreValue = new ScoreValue(getContext(), member);
+            scoreValue.setScore(value);
             if (getResultScore() != null) {
                 for (MemberScoreValue valueResult : getResultScore()) {
                     if (valueResult.getScore().equals(value)) {
                         BigDecimal result = valueResult.getValue();
-                        penaltyValue.setStringTotalScore(result.toString());
+                        scoreValue.setStringTotalScore(result.toString());
+                        scoreValue.setScoreValue(result.intValue());
                     }
                 }
             }
-            penalties.add(penaltyValue);
-            roundValueMasterChild.addView(penaltyValue);
+            penalties.add(scoreValue);
+            roundValueMasterChild.addView(scoreValue);
         }
-        childRootLayout.addView(roundValueMaster);
     }
 
 

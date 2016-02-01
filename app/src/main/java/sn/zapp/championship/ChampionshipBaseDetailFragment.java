@@ -46,7 +46,7 @@ public class ChampionshipBaseDetailFragment extends BaseDetailFragment {
             public void onClick(View view) {
                 for (RoundItem roundItem: rounds) {
                     roundItem.getEditTextDescription().clearFocus();
-                    roundItem.getEditTextRound().clearFocus();
+                    roundItem.getTextViewRound().clearFocus();
                     roundItem.getEditTextMultiplier().clearFocus();
                 }
                 initFields(null);

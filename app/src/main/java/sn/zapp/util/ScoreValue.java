@@ -34,7 +34,7 @@ public class ScoreValue extends LinearLayout {
 
     public ScoreValue(Context context, Member member) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.tab_score_value, this);
+//        LayoutInflater.from(context).inflate(R.layout.tab_score_value, this);
         initViews(context);
         handler = new Handler();
         this.member = member;

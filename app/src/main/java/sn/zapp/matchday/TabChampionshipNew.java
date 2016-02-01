@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 import sn.zapp.R;
+import sn.zapp.event.RoundValueEvent;
 import sn.zapp.event.SaveEvent;
 import sn.zapp.model.Championship;
 import sn.zapp.model.ChampionshipRoundValue;
@@ -25,12 +27,12 @@ import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.model.Round;
 import sn.zapp.realm.ZappRealmDBManager;
 import sn.zapp.util.Action;
-import sn.zapp.util.RoundValue;
+import sn.zapp.util.RoundValueNew;
 
 /**
  * Created by Steppo on 22.01.2016.
  */
-public class TabChampionship extends Fragment {
+public class TabChampionshipNew extends Fragment {
 
     private Member member;
     private ZappRealmDBManager realmDBManager = null;
@@ -38,10 +40,12 @@ public class TabChampionship extends Fragment {
     private Action viewState = null;
     private TextInputLayout header;
     protected LinearLayout childRootLayout = null;
-    private List<RoundValue> roundValues = null;
+    private List<RoundValueNew> roundValues = null;
     private final EventBus bus = EventBus.getDefault();
+    private RoundValueNew currentRound = null;
+    private View tabChampionship = null;
 
-    public TabChampionship() {
+    public TabChampionshipNew() {
     }
 
     @Override
@@ -52,12 +56,17 @@ public class TabChampionship extends Fragment {
         bus.register(this);
     }
 
+    public void onEvent(RoundValueEvent event) {
+//        header(event.getMemberEmail(), event.getChampionship(), event.getValue(), event.getRound());
+//        hier header aktualisierenDann bis Sam
+    }
+
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabChampionship newInstance(Member member, RealmList<MemberChampionshipValue> championshipValues, Action viewState) {
-        TabChampionship fragment = new TabChampionship();
+    public static TabChampionshipNew newInstance(Member member, RealmList<MemberChampionshipValue> championshipValues, Action viewState) {
+        TabChampionshipNew fragment = new TabChampionshipNew();
         fragment.setMember(member);
         fragment.setResultChampionship(championshipValues);
         fragment.setViewState(viewState);
@@ -67,7 +76,7 @@ public class TabChampionship extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
+        tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
 
         childRootLayout = (LinearLayout) tabChampionship.findViewById(R.id.layout_child);
         initFields(inflater, container);
@@ -75,9 +84,7 @@ public class TabChampionship extends Fragment {
     }
     //
     public void onEvent(SaveEvent saveEvent){
-        for (RoundValue roundValue: roundValues) {
-            roundValue.getEditTextDescription().clearFocus();
-            roundValue.getEditTextRound().clearFocus();
+        for (RoundValueNew roundValue: roundValues) {
             roundValue.getEditTextResult().clearFocus();
         }
     }
@@ -86,15 +93,34 @@ public class TabChampionship extends Fragment {
     public void initFields(LayoutInflater inflater, ViewGroup container) {
         RealmResults list = realmDBManager.list_all_championships();
         for (Championship value: realmDBManager.list_all_championships()) {
-            View roundValueMaster = inflater.inflate(R.layout.tab_championship_master_card, container, false);
-            LinearLayout roundValueMasterChild = (LinearLayout) roundValueMaster.findViewById(R.id.layout_child);
+            View roundValueMaster = inflater.inflate(R.layout.tab_championship_master_card, null);//, false);
+            RelativeLayout roundValueMasterChild = (RelativeLayout) roundValueMaster.findViewById(R.id.layout_child);
             header = (TextInputLayout) roundValueMaster.findViewById(R.id.input_layout_header);
             header.getEditText().setText(value.getName());
-
             for (Round round : value.getRounds()) {
-                RoundValue roundValue = new RoundValue(getContext(), value.getName(), member.getEmail());
+                RoundValueNew roundValue = new RoundValueNew(getContext(), value.getName(), member.getEmail(), round.getRoundnumber());
                 roundValue.setRound(round);
+                RelativeLayout.LayoutParams rlp =  new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 roundValueMasterChild.addView(roundValue);
+                if(currentRound != null && round.getRoundnumber() < 4){
+                    rlp = (RelativeLayout.LayoutParams) roundValue
+                            .getLayoutParams();
+                    rlp.addRule(RelativeLayout.RIGHT_OF, currentRound.getId());
+                }
+
+                if(round.getRoundnumber() > 3){//hier noch ändern right of auch für die über 3 dinger machen
+                    rlp = (RelativeLayout.LayoutParams) roundValue
+                            .getLayoutParams();
+                    rlp.addRule(RelativeLayout.BELOW, roundValues.get(0).getId());
+                }else if(round.getRoundnumber() > 6){
+                    rlp = (RelativeLayout.LayoutParams) roundValue
+                            .getLayoutParams();
+                    rlp.addRule(RelativeLayout.BELOW, roundValues.get(3).getId());
+                }
+
+                roundValue.setLayoutParams(rlp);
+                currentRound = roundValue;
                 roundValues.add(roundValue);
                 if(getResultChampionship() != null){
                     for (MemberChampionshipValue valueResult : getResultChampionship()) {
@@ -113,6 +139,7 @@ public class TabChampionship extends Fragment {
                 }
             }
             childRootLayout.addView(roundValueMaster);
+            currentRound = null;
         }
 
 
@@ -127,6 +154,12 @@ public class TabChampionship extends Fragment {
     public void onDestroy() {
         if (realmDBManager != null) realmDBManager.close();
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        currentRound = null;
     }
 
     @Override

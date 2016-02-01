@@ -38,7 +38,7 @@ public class PenaltyValue extends LinearLayout {
 
     public PenaltyValue(Context context, Member member, TabPenaltyNew view) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.tab_penalty_value, this);
+//        LayoutInflater.from(context).inflate(R.layout.tab_penalty_value, this);
         initViews(context);
         handler = new Handler();
         this.member = member;
@@ -157,7 +157,7 @@ public class PenaltyValue extends LinearLayout {
 
     public void setPenalty(Penalty penalty) {
         this.penalty = penalty;
-        setStringContentPenalty(penalty.getName());
+        setStringContentPenalty(penalty.getName() + " " + penalty.getAmount() + "€");
         setStringTotalPenalty(String.valueOf(penaltyValue));
     }
 

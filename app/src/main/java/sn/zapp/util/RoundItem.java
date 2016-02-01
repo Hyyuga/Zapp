@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import sn.zapp.R;
 import sn.zapp.model.Round;
@@ -18,13 +19,12 @@ public class RoundItem extends LinearLayout {
     private String stringMultiplier = "";
     private String stringDescription = "";
 
-    private EditText editTextRound;
+    private TextView textViewRound;
     private EditText editTextMultiplier;
     private EditText editTextDescription;
 
     public RoundItem(Context context, int id) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
         initViews(context);
         if(id != -12){
             this.setId(id);
@@ -35,8 +35,8 @@ public class RoundItem extends LinearLayout {
     private void initViews(Context context) {
         LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
 
-        setEditTextRound((EditText) this.findViewById(R.id.editText_number));
-        getEditTextRound().setText(getStringRound());
+        setTextViewRound((TextView) this.findViewById(R.id.editText_number));
+        getTextViewRound().setText(getStringRound());
 
         setEditTextMultiplier((EditText) this.findViewById(R.id.editText_multiplier));
         getEditTextMultiplier().setText(getStringMultiplier());
@@ -75,8 +75,8 @@ public class RoundItem extends LinearLayout {
 
     public void setStringRound(String stringRound) {
         this.stringRound = stringRound;
-        if(this.editTextRound != null)
-            editTextRound.setText(stringRound);
+        if(this.textViewRound != null)
+            textViewRound.setText(stringRound);
     }
 
     public String getStringMultiplier() {
@@ -99,12 +99,12 @@ public class RoundItem extends LinearLayout {
             editTextDescription.setText(stringDescription);
     }
 
-    public EditText getEditTextRound() {
-        return editTextRound;
+    public TextView getTextViewRound() {
+        return textViewRound;
     }
 
-    public void setEditTextRound(EditText editTextRound) {
-        this.editTextRound = editTextRound;
+    public void setTextViewRound(TextView textViewRound) {
+        this.textViewRound = textViewRound;
     }
 
     public EditText getEditTextMultiplier() {

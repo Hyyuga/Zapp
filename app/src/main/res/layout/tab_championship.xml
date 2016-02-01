@@ -8,12 +8,7 @@
         android:id="@+id/layout_child"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/detail_layout_margin"
-        android:layout_marginRight="@dimen/detail_layout_margin"
-        android:layout_marginTop="@dimen/detail_layout_margin"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:orientation="vertical">
 
     </LinearLayout>
 </ScrollView>

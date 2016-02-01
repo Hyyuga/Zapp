@@ -1,0 +1,91 @@
+<sn.zapp.util.ZappCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    style="@style/ZappCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layout_fragment_championship_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+
+                <EditText
+                    android:id="@+id/editText_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name des Spiels"
+                    android:inputType="textNoSuggestions"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="36dp"
+                android:layout_gravity="top"
+                android:src="@drawable/ic_help_outline_grey_600_48dp"
+                android:layout_weight="2"/>
+        </LinearLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout_child"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/detail_layout_margin"
+            android:layout_marginRight="@dimen/detail_layout_margin"
+            android:layout_marginTop="@dimen/detail_layout_margin">
+
+        </RelativeLayout>
+    </LinearLayout>
+</sn.zapp.util.ZappCardView>
+
+<!--<sn.zapp.util.RoundValueNew xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:id="@+id/1">-->
+<!--<android.support.design.widget.TextInputLayout-->
+    <!--android:id="@+id/input_layout_score"-->
+    <!--android:layout_width="75dp"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/editText_Score"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Runde"-->
+        <!--android:inputType="textNoSuggestions" />-->
+<!--</android.support.design.widget.TextInputLayout>-->
+<!--</sn.zapp.util.RoundValueNew>-->
+<!--<sn.zapp.util.RoundValueNew xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_toRightOf="@+id/1">-->
+<!--<android.support.design.widget.TextInputLayout-->
+    <!--android:id="@+id/input_layout_score"-->
+    <!--android:layout_width="75dp"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/editText_Score"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Runde"-->
+        <!--android:inputType="textNoSuggestions" />-->
+<!--</android.support.design.widget.TextInputLayout>-->
+<!--</sn.zapp.util.RoundValueNew>-->

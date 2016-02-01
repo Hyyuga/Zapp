@@ -3,9 +3,11 @@ package sn.zapp.matchday;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import io.realm.RealmList;
 import sn.zapp.R;
+import sn.zapp.event.PaidEvent;
 import sn.zapp.event.SaveEvent;
 import sn.zapp.model.Member;
 import sn.zapp.model.MemberPenalyValue;
@@ -38,7 +41,7 @@ public class TabPenaltyNew extends Fragment {
     private final EventBus bus = EventBus.getDefault();
     private List<PenaltyValue> penalties;
     private BigDecimal totalPenaltyValue = null;
-
+    private View tabPenalty = null;
     public TabPenaltyNew() {
     }
 
@@ -66,11 +69,25 @@ public class TabPenaltyNew extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
+        tabPenalty = inflater.inflate(R.layout.tab_penalty_master, container, false);
 
-        childRootLayout = (LinearLayout) tabChampionship.findViewById(R.id.layout_child);
+        childRootLayout = (LinearLayout) tabPenalty.findViewById(R.id.layout_child);
+        final AppCompatCheckBox checkBoxPaid = (AppCompatCheckBox)tabPenalty.findViewById(R.id.checkBox_paid);
+
+        header = (TextView) tabPenalty.findViewById(R.id.textViewHeaderStrafen);
+
+        checkBoxPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                PaidEvent event = new PaidEvent();
+                event.setPaid(isChecked);
+                event.setMember(getMember());
+                bus.post(event);
+            }
+        });
+
         initFields(inflater, container);
-        return tabChampionship;
+        return tabPenalty;
     }
 
     //
@@ -80,9 +97,6 @@ public class TabPenaltyNew extends Fragment {
 
     public void initFields(LayoutInflater inflater, ViewGroup container) {
 
-        View roundValueMaster = inflater.inflate(R.layout.tab_penalty_new, container, false);
-        LinearLayout roundValueMasterChild = (LinearLayout) roundValueMaster.findViewById(R.id.layout_child);
-        header = (TextView) roundValueMaster.findViewById(R.id.textViewHeaderStrafen);
         for (Penalty value : realmDBManager.list_all_penalties()) {
             PenaltyValue penaltyValue = new PenaltyValue(getContext(), member, this);
             penaltyValue.setPenalty(value);
@@ -91,16 +105,16 @@ public class TabPenaltyNew extends Fragment {
                     if (valueResult.getPenalty().equals(value)) {
                         BigDecimal result = valueResult.getValue();
                         penaltyValue.setStringTotalPenalty(result.toString());
+                        penaltyValue.setPenaltyValue(result.intValue());
                         result = result.multiply(new BigDecimal(value.getAmount()).setScale(2));
                         totalPenaltyValue = totalPenaltyValue.add(result);
                     }
                 }
             }
             penalties.add(penaltyValue);
-            roundValueMasterChild.addView(penaltyValue);
+            childRootLayout.addView(penaltyValue);
         }
         header.setText("Strafen: " + totalPenaltyValue.toString() + " €");
-        childRootLayout.addView(roundValueMaster);
     }
 
     public void addPenaltyTotal(BigDecimal value){

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,7 +134,7 @@ public class MatchdayTabFragment extends Fragment{
         this.resultShip = resultShip;
     }
 
-    public class PagerAdapter extends FragmentPagerAdapter {
+    public class PagerAdapter extends FragmentStatePagerAdapter{
         int mNumOfTabs;
 
         public PagerAdapter(FragmentManager fm, int NumOfTabs) {
@@ -153,7 +153,7 @@ public class MatchdayTabFragment extends Fragment{
                     TabScoreNew tab2 = TabScoreNew.newInstance(getMember(),getResultScore(), getViewState());
                     return tab2;
                 case 2:
-                    TabChampionship tab3 = TabChampionship.newInstance(getMember(),getResultShip(), getViewState());
+                    TabChampionshipNew tab3 = TabChampionshipNew.newInstance(getMember(),getResultShip(), getViewState());
                     return tab3;
                 default:
                     return null;

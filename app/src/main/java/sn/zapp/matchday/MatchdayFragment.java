@@ -29,8 +29,10 @@ import sn.zapp.R;
 import sn.zapp.ZappApplication;
 import sn.zapp.base.BaseDetailFragment;
 import sn.zapp.base.BaseListActivity;
+import sn.zapp.event.PaidEvent;
 import sn.zapp.event.PenaltyEvent;
 import sn.zapp.event.RoundValueEvent;
+import sn.zapp.event.SaveEvent;
 import sn.zapp.event.ScoreEvent;
 import sn.zapp.model.Championship;
 import sn.zapp.model.ChampionshipRoundValue;
@@ -133,6 +135,7 @@ public class MatchdayFragment extends BaseDetailFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bus.post(new SaveEvent());
                 createMatchday();
             }
         });
@@ -179,6 +182,40 @@ public class MatchdayFragment extends BaseDetailFragment {
 
     public void onEvent(RoundValueEvent event) {
         updateMemberChampionshipResult(event.getMemberEmail(), event.getChampionship(), event.getValue(), event.getRound());
+    }
+
+    public void onEvent(PaidEvent event) {
+        updateMemberPaidResult(event.getMember(), event.isPaid());
+    }
+
+    private void updateMemberPaidResult(Member member, boolean paid) {
+        if (viewState.equals(Action.EDIT))
+            Realm.getInstance(ZappApplication.getAppContext()).beginTransaction();
+
+        RealmList<MemberResult> memberResultList = getMatchday().getMemberResults();
+        if (memberResultList == null)
+            getMatchday().setMemberResults(new RealmList<MemberResult>());
+
+        MemberResult result = null;
+        for (MemberResult mResult : getMatchday().getMemberResults()) {
+            if (mResult.getMember().equals(member.getEmail())) {
+                result = mResult;
+                break;
+            }
+        }
+
+        if (result == null || (result != null && result.getResultsPenalty() == null)) {
+            boolean addPenalty = result == null;
+            if (result == null) result = new MemberResult();
+            result.setPaid(paid);
+            result.setMember(member.getEmail());
+            if (addPenalty) getMatchday().getMemberResults().add(result);
+        } else {
+            result.setPaid(paid);
+        }
+
+        if (viewState.equals(Action.EDIT))
+            Realm.getInstance(ZappApplication.getAppContext()).commitTransaction();
     }
 
 

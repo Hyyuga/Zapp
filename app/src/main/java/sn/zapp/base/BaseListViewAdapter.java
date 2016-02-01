@@ -54,7 +54,7 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
                 return false;
             }
         });
-        holder.mLogo.setImageResource(R.mipmap.zapplogo);
+//        holder.mLogo.setImageResource(R.mipmap.zapplogo);
     }
 
     public BaseListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
