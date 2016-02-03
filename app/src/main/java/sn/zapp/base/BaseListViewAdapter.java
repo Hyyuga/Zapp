@@ -2,6 +2,7 @@ package sn.zapp.base;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.util.Action;
 
 /**
@@ -54,7 +58,7 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
                 return false;
             }
         });
-        holder.mLogo.setImageResource(R.mipmap.zapplogo);
+        Picasso.with(ZappApplication.getAppContext()).load(R.drawable.zapplogo).into(holder.mLogo);
     }
 
     public BaseListFragment.OnListFragmentInteractionListener getmOnFragmentListener() {
@@ -70,17 +74,22 @@ public abstract class BaseListViewAdapter<T extends RealmObject> extends RealmBa
         public final TextView mContentView;
         public final ImageView mLogo;
         public RealmObject mItem;
+
         public ViewHolder(LinearLayout view) {
             super(view);
             mView = view;
             mContentView = (TextView) view.findViewById(R.id.content);
             mLogo = (ImageView) view.findViewById(R.id.logo);
         }
+
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 
-
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
 }

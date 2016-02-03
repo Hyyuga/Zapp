@@ -10,10 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import sn.zapp.R;
+import sn.zapp.ZappApplication;
 import sn.zapp.base.BaseListFragment;
 import sn.zapp.model.Member;
 import sn.zapp.util.Action;
@@ -42,7 +45,7 @@ public class MemberListViewAdapter extends RealmBasedRecyclerViewAdapter<Member,
         holder.mTextViewName.setText(member.getFirstName() + " " + member.getLastName());
         holder.mTextViewEmail.setText(member.getEmail());
         holder.mTextViewBirthday.setText(member.getBirthday());
-        holder.mImageViewPerson.setImageResource(R.mipmap.zapplogo);
+        Picasso.with(ZappApplication.getAppContext()).load(R.drawable.zapplogo).into(holder.mImageViewPerson);
         CardView cardView = (CardView) holder.mView.findViewById(R.id.card_view);
         cardView.setOnTouchListener(new View.OnTouchListener() {
             @Override

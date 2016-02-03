@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 
 public class MainFragment extends Fragment {
     @Nullable
@@ -15,7 +17,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ImageView image = (ImageView) view.findViewById(R.id.logo);
-        image.setImageResource(R.mipmap.zapplogo);
+        Picasso.with(ZappApplication.getAppContext()).load(R.drawable.zapplogo).into(image);
         return view;
 
     }
