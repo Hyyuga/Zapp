@@ -1,12 +1,16 @@
 package sn.zapp.matchday;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -27,6 +31,7 @@ import sn.zapp.model.MemberChampionshipValue;
 import sn.zapp.model.Round;
 import sn.zapp.realm.ZappRealmDBManager;
 import sn.zapp.util.Action;
+import sn.zapp.util.RoundDescription;
 import sn.zapp.util.RoundValueNew;
 
 /**
@@ -44,6 +49,8 @@ public class TabChampionshipNew extends Fragment {
     private final EventBus bus = EventBus.getDefault();
     private RoundValueNew currentRound = null;
     private View tabChampionship = null;
+    private LayoutInflater inflater = null;
+    private static final int NUMBER = 3;
 
     public TabChampionshipNew() {
     }
@@ -52,7 +59,7 @@ public class TabChampionshipNew extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realmDBManager = new ZappRealmDBManager();
-        roundValues =  new ArrayList<>();
+        roundValues = new ArrayList<>();
         bus.register(this);
     }
 
@@ -74,61 +81,132 @@ public class TabChampionshipNew extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        tabChampionship = inflater.inflate(R.layout.tab_championship, container, false);
+        setInflater(inflater);
+
+        tabChampionship = getInflater().inflate(R.layout.tab_championship, container, false);
 
         childRootLayout = (LinearLayout) tabChampionship.findViewById(R.id.layout_child);
         initFields(inflater, container);
+
         return tabChampionship;
     }
+
     //
-    public void onEvent(SaveEvent saveEvent){
-        for (RoundValueNew roundValue: roundValues) {
+    public void onEvent(SaveEvent saveEvent) {
+        for (RoundValueNew roundValue : roundValues) {
             roundValue.getEditTextResult().clearFocus();
         }
     }
 
 
+    public void showDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Reset...");
+        alertDialog.setMessage("Are you sure?");
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        alertDialog.setIcon(R.drawable.zapplogo);
+        alertDialog.show();
+    }
+    protected void showAbout(Championship championship) {
+        // Inflate the dialog_round_description message contents
+        View messageView = new RoundDescription(getContext(), championship);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setIcon(R.drawable.zapplogo);
+        builder.setTitle(championship.getName());
+        builder.setView(messageView);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.create();
+        builder.show();
+    }
     public void initFields(LayoutInflater inflater, ViewGroup container) {
         RealmResults list = realmDBManager.list_all_championships();
-        for (Championship value: realmDBManager.list_all_championships()) {
+        for (final Championship value : realmDBManager.list_all_championships()) {
             View roundValueMaster = inflater.inflate(R.layout.tab_championship_master_card, null);//, false);
+
+            ImageView iconInfo = (ImageView) roundValueMaster.findViewById(R.id.icon_info);
+
+            iconInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAbout(value);//realmDBManager.list_all_championships().first());
+                }
+            });
+
+            List<Integer> breakpoints = getBreakpoints(value.getRounds().size());
+
             RelativeLayout roundValueMasterChild = (RelativeLayout) roundValueMaster.findViewById(R.id.layout_child);
             header = (TextInputLayout) roundValueMaster.findViewById(R.id.input_layout_header);
             header.getEditText().setText(value.getName());
             for (Round round : value.getRounds()) {
                 RoundValueNew roundValue = new RoundValueNew(getContext(), value.getName(), member.getEmail(), round.getRoundnumber());
                 roundValue.setRound(round);
-                RelativeLayout.LayoutParams rlp =  new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams rlp = null;
                 roundValueMasterChild.addView(roundValue);
-                if(currentRound != null && round.getRoundnumber() < 4){
-                    rlp = (RelativeLayout.LayoutParams) roundValue
-                            .getLayoutParams();
-                    rlp.addRule(RelativeLayout.RIGHT_OF, currentRound.getId());
-                }
 
-                if(round.getRoundnumber() > 3){//hier noch ändern right of auch für die über 3 dinger machen
-                    rlp = (RelativeLayout.LayoutParams) roundValue
-                            .getLayoutParams();
-                    rlp.addRule(RelativeLayout.BELOW, roundValues.get(0).getId());
-                }else if(round.getRoundnumber() > 6){
-                    rlp = (RelativeLayout.LayoutParams) roundValue
-                            .getLayoutParams();
-                    rlp.addRule(RelativeLayout.BELOW, roundValues.get(3).getId());
-                }
 
-                roundValue.setLayoutParams(rlp);
+//                for (Integer breakpoint: breakpoints) {
+//                    boolean in = breakpoints.contains(new Integer(round.getRoundnumber()));
+//                    if ( in) {//hier noch ändern right of auch für die über 3 dinger machen
+//                        int breakpoint = 0;
+//                        for (Integer breaks : breakpoints){
+//                                if(breaks.equals(new Integer(round.getRoundnumber())))
+//                                    breakpoint = breaks;
+//
+//                        }
+//                        int index = breakpoint - NUMBER;
+//                        Log.d("Index", round.getRoundnumber() + "_BELOW_" + index);
+//                        rlp = (RelativeLayout.LayoutParams) roundValue.getLayoutParams();
+//                        rlp.addRule(RelativeLayout.BELOW, roundValues.get(index).getId());
+//                    }else {
+//                        if(currentRound!=null) {
+//                            rlp = (RelativeLayout.LayoutParams) roundValue
+//                                    .getLayoutParams();
+//                            Log.d("Index", round.getRoundnumber() + "_RIGHT OF_" + currentRound.getId());
+//                            rlp.addRule(RelativeLayout.RIGHT_OF, currentRound.getId());
+//                        }
+//                    }
+
+
+            if (currentRound != null && round.getRoundnumber() != 4 && round.getRoundnumber() != 7) {
+                rlp = (RelativeLayout.LayoutParams) roundValue
+                        .getLayoutParams();
+                rlp.addRule(RelativeLayout.RIGHT_OF, currentRound.getId());
+                Log.d("RIGHT OF", round.getRoundnumber() + "_RIGHT OF_" + currentRound.getId());
+            }
+
+            if (round.getRoundnumber() == 4) {//hier noch ändern right of auch für die über 3 dinger machen
+                rlp = (RelativeLayout.LayoutParams) roundValue
+                        .getLayoutParams();
+                rlp.removeRule(RelativeLayout.RIGHT_OF);
+                rlp.addRule(RelativeLayout.BELOW, roundValues.get(0).getId());
+                Log.d("BELOW", round.getRoundnumber() + "_BELOW_" + roundValues.get(0).getId());
+            } else if (round.getRoundnumber() == 7) {
+                rlp = (RelativeLayout.LayoutParams) roundValue
+                        .getLayoutParams();
+                rlp.removeRule(RelativeLayout.RIGHT_OF);
+                rlp.addRule(RelativeLayout.BELOW, roundValues.get(3).getId());
+                Log.d("BELOW", round.getRoundnumber() + "_BELOW_" + roundValues.get(3).getId());
+            }
+
+                roundValue.setLayoutParams(rlp != null ? rlp :  new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 currentRound = roundValue;
                 roundValues.add(roundValue);
-                if(getResultChampionship() != null){
+                if (getResultChampionship() != null) {
                     for (MemberChampionshipValue valueResult : getResultChampionship()) {
-                        if(value.getName().equals(valueResult.getChampionship().getName())){
-                            header.getEditText().setText(value.getName() + ": " + valueResult.getDbValue());
-                            if(valueResult.getRoundResult() != null){
-                                for(ChampionshipRoundValue roundResultValue : valueResult.getRoundResult()){
-                                    if(roundResultValue.getRound().getRoundnumber() == round.getRoundnumber()){
+                        if (value.getName().equals(valueResult.getChampionship().getName())) {
+                            if (valueResult.getRoundResult() != null) {
+                                for (ChampionshipRoundValue roundResultValue : valueResult.getRoundResult()) {
+                                    if (roundResultValue.getRound().getRoundnumber() == round.getRoundnumber()) {
                                         BigDecimal result = roundResultValue.getValue().divide(new BigDecimal(roundResultValue.getRound().getMultiplier()));
                                         roundValue.setStringResult(result.toString());
                                     }
@@ -144,6 +222,19 @@ public class TabChampionshipNew extends Fragment {
 
 
     }
+
+    private List<Integer> getBreakpoints(int size) {
+        List<Integer> result = new ArrayList<>();
+
+        Integer ints = size / NUMBER;
+
+        for (int i = 1; i < ints + 1 ; i++) {
+            result.add(new Integer((i*NUMBER))+1);
+        }
+
+        return result;
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -193,5 +284,13 @@ public class TabChampionshipNew extends Fragment {
 
     public void setViewState(Action viewState) {
         this.viewState = viewState;
+    }
+
+    public void setInflater(LayoutInflater argInflater){
+        inflater = argInflater;
+    }
+
+    public LayoutInflater getInflater() {
+        return inflater;
     }
 }

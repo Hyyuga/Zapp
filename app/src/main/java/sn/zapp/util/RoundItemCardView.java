@@ -4,42 +4,52 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.greenrobot.event.EventBus;
 import sn.zapp.R;
+import sn.zapp.event.RoundItemDeleteEvent;
 import sn.zapp.model.Round;
 
-public class RoundItem extends LinearLayout {
+public class RoundItemCardView extends LinearLayout {
     private int id;
 
     private Round round;
+
+    private ZappCardView card_view;
 
     private String stringRound = "";
     private String stringMultiplier = "";
     private String stringDescription = "";
 
+    private ImageView imageViewMenu;
     private TextView textViewRound;
     private EditText editTextMultiplier;
     private EditText editTextDescription;
 
-    public RoundItem(Context context, int id) {
+    public RoundItemCardView(Context context, int id) {
         super(context);
         initViews(context);
         if(id != -12){
             this.setId(id);
             this.setStringRound(String.valueOf(id));
+            this.setStringMultiplier("1");
         }
 
     }
     private void initViews(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
+        LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item_card_view, this);
 
-//        setTextViewRound((TextView) this.findViewById(R.id.editText_number));
-//        getTextViewRound().setText(getStringRound());
+        setTextViewRound((TextView) this.findViewById(R.id.text_view_round));
+        getTextViewRound().setText(getStringRound());
 
-        setEditTextMultiplier((EditText) this.findViewById(R.id.editText_multiplier));
-        getEditTextMultiplier().setText(getStringMultiplier());
+//        setEditTextMultiplier((EditText) this.findViewById(R.id.editText_multiplier));
+//        getEditTextMultiplier().setText(getStringMultiplier());
+
+
+        setImageViewMenu((ImageView) this.findViewById(R.id.image_round_item_menu));
 
         setEditTextDescription((EditText) this.findViewById(R.id.editText_description));
         getEditTextDescription().setText(getStringDescription());
@@ -58,15 +68,23 @@ public class RoundItem extends LinearLayout {
                 }
             }
         });
-        getEditTextMultiplier().setOnFocusChangeListener(new OnFocusChangeListener() {
+        getImageViewMenu().setOnClickListener(new OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    EditText text = (EditText) v;
-                    setStringMultiplier(text.getText().toString());
-                }
+            public void onClick(View v) {
+                RoundItemDeleteEvent event = new RoundItemDeleteEvent();
+                event.setId(getId());
+                EventBus.getDefault().post(event);
             }
         });
+//        getEditTextMultiplier().setOnFocusChangeListener(new OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(!hasFocus){
+//                    EditText text = (EditText) v;
+//                    setStringMultiplier(text.getText().toString());
+//                }
+//            }
+//        });
     }
 
     public String getStringRound() {
@@ -143,5 +161,13 @@ public class RoundItem extends LinearLayout {
         setStringRound(String.valueOf(round.getRoundnumber()));
         setStringDescription(round.getDescription());
 
+    }
+
+    public ImageView getImageViewMenu() {
+        return imageViewMenu;
+    }
+
+    public void setImageViewMenu(ImageView imageViewMenu) {
+        this.imageViewMenu = imageViewMenu;
     }
 }

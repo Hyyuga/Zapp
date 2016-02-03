@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,8 +41,10 @@ public class TabPenaltyNew extends Fragment {
     protected LinearLayout childRootLayout = null;
     private final EventBus bus = EventBus.getDefault();
     private List<PenaltyValue> penalties;
+    private boolean paid;
     private BigDecimal totalPenaltyValue = null;
     private View tabPenalty = null;
+    private CheckBox checkBoxPaid;
     public TabPenaltyNew() {
     }
 
@@ -58,11 +61,12 @@ public class TabPenaltyNew extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TabPenaltyNew newInstance(Member member, RealmList<MemberPenalyValue> penaltyValues, Action viewState) {
+    public static TabPenaltyNew newInstance(Member member, RealmList<MemberPenalyValue> penaltyValues, boolean paid, Action viewState) {
         TabPenaltyNew fragment = new TabPenaltyNew();
         fragment.setMember(member);
         fragment.setResultPenalty(penaltyValues);
         fragment.setViewState(viewState);
+        fragment.setPaid(paid);
         return fragment;
     }
 
@@ -72,9 +76,10 @@ public class TabPenaltyNew extends Fragment {
         tabPenalty = inflater.inflate(R.layout.tab_penalty_master, container, false);
 
         childRootLayout = (LinearLayout) tabPenalty.findViewById(R.id.layout_child);
-        final AppCompatCheckBox checkBoxPaid = (AppCompatCheckBox)tabPenalty.findViewById(R.id.checkBox_paid);
 
         header = (TextView) tabPenalty.findViewById(R.id.textViewHeaderStrafen);
+
+        checkBoxPaid = (CheckBox) tabPenalty.findViewById(R.id.checkBox_paid);
 
         checkBoxPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -96,6 +101,8 @@ public class TabPenaltyNew extends Fragment {
 
 
     public void initFields(LayoutInflater inflater, ViewGroup container) {
+
+        checkBoxPaid.setChecked(isPaid());
 
         for (Penalty value : realmDBManager.list_all_penalties()) {
             PenaltyValue penaltyValue = new PenaltyValue(getContext(), member, this);
@@ -170,5 +177,13 @@ public class TabPenaltyNew extends Fragment {
 
     public void setViewState(Action viewState) {
         this.viewState = viewState;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

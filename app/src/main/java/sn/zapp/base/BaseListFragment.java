@@ -3,7 +3,6 @@ package sn.zapp.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ public abstract class BaseListFragment extends Fragment{
     protected OnListFragmentInteractionListener mListener;
     protected ZappRealmDBManager realmDBManager;
     protected RealmRecyclerView mUiRecyclerView;
-    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

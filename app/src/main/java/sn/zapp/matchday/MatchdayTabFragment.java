@@ -30,6 +30,7 @@ public class MatchdayTabFragment extends Fragment{
     private RealmList<MemberScoreValue> resultScore = null;
     private RealmList<MemberChampionshipValue> resultShip = null;
     private Action viewState = null;
+    private boolean paid;
 
 
     @Override
@@ -78,6 +79,7 @@ public class MatchdayTabFragment extends Fragment{
                     fragment.setPenaltyResult(memberResult.getResultsPenalty());
                     fragment.setResultScore(memberResult.getResultsScore());
                     fragment.setResultShip(memberResult.getResultsChampionship());
+                    fragment.setPaid(memberResult.isPaid());
                 }
             }
         }
@@ -134,6 +136,13 @@ public class MatchdayTabFragment extends Fragment{
         this.resultShip = resultShip;
     }
 
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+    public boolean isPaid(){
+        return this.paid;
+    }
+
     public class PagerAdapter extends FragmentStatePagerAdapter{
         int mNumOfTabs;
 
@@ -147,7 +156,7 @@ public class MatchdayTabFragment extends Fragment{
 
             switch (position) {
                 case 0:
-                    TabPenaltyNew tab1 = TabPenaltyNew.newInstance(getMember(), getPenaltyResult(), getViewState());
+                    TabPenaltyNew tab1 = TabPenaltyNew.newInstance(getMember(), getPenaltyResult(), isPaid(), getViewState());
                     return tab1;
                 case 1:
                     TabScoreNew tab2 = TabScoreNew.newInstance(getMember(),getResultScore(), getViewState());

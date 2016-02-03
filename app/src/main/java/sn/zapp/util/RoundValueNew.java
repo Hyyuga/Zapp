@@ -123,8 +123,9 @@ public class RoundValueNew extends LinearLayout {
 
     public void setRound(Round round) {
         this.round = round;
-//        getEditTextResult().setHint("Runde " + String.valueOf(round.getRoundnumber()));
-        getTextInputLayoutResult().setHint("Runde " + String.valueOf(round.getRoundnumber()) + "->" +String.valueOf(round.getMultiplier()) + "x");
+//        getEditTextResult().setHint("x " +String.valueOf(round.getMultiplier()));
+        getTextInputLayoutResult().setHint("x " +String.valueOf(round.getMultiplier()));
+//        getTextInputLayoutResult().setHint("Runde " + String.valueOf(round.getRoundnumber()));
     }
 
     @Override

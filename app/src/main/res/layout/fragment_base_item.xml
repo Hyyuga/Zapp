@@ -8,9 +8,11 @@
         android:id="@+id/card_view"
         style="@style/ZappCardView"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:foreground="@drawable/custom_bg">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,15 +20,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/cardview_margin_default"
+            android:layout_marginBottom="@dimen/cardview_margin_default"
             android:weightSum="6">
 
-            <!--<ImageView-->
-                <!--android:id="@+id/logo"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_weight="2"-->
-                <!--android:src="@drawable/zapplogo"/>-->
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_marginLeft="15dp"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2"/>
 
             <TextView
                 android:id="@+id/content"
@@ -36,6 +39,7 @@
                 android:layout_marginLeft="25dp"
                 android:textSize="@dimen/penalty_list_item_fontsize"
                 android:text="asdasdasd"
+                style="@style/MyTextView"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
     </sn.zapp.util.ZappCardView>

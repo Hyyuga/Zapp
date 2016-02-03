@@ -139,6 +139,9 @@ public class MatchdayFragment extends BaseDetailFragment {
                 createMatchday();
             }
         });
+        if(savedInstanceState != null){
+            viewState = Action.valueOf(savedInstanceState.getString("viewState"));
+        }
         if (viewState.equals(Action.SHOW))
             fab.hide();
 
@@ -487,6 +490,12 @@ public class MatchdayFragment extends BaseDetailFragment {
     @Override
     public String getActivityTitle() {
         return "Ergebnisse";
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("viewState", viewState.name());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

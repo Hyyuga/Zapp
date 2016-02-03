@@ -31,7 +31,7 @@
         style="@style/ZappCardView"
         android:layout_width="0dp"
         android:layout_weight="5"
-        android:layout_height="@dimen/cardview_height_penalty"
+        android:layout_height="@dimen/cardview_height_default"
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/custom_bg"

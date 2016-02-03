@@ -17,7 +17,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/editText_number"
+            android:id="@+id/text_view_round"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"

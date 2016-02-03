@@ -41,7 +41,7 @@ public class RoundValue extends LinearLayout {
     private void initViews(Context context) {
         LayoutInflater.from(context).inflate(R.layout.fragment_championship_round_item, this);
 
-        setEditTextRound((EditText) this.findViewById(R.id.editText_number));
+        setEditTextRound((EditText) this.findViewById(R.id.text_view_round));
         getEditTextRound().setText(getStringRound());
 
         setEditTextResult((EditText) this.findViewById(R.id.editText_result));
